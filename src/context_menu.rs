@@ -311,6 +311,9 @@ pub fn rendered_label(
         "Antigravity" => language.text("Antigravity"),
         "OpenCode" => language.text("OpenCode"),
         "Cursor" => language.text("Cursor"),
+        "Claude Account 2" => language.text("Claude Account 2"),
+        "Claude Account 3" => language.text("Claude Account 3"),
+        "Claude Account 4" => language.text("Claude Account 4"),
         "Open Dashboard" => language.text("Open Dashboard"),
         "Every minute" => language.text("Every minute"),
         "Every 5 minutes" => language.text("Every 5 minutes"),
@@ -399,6 +402,27 @@ pub fn classic_context_menu() -> ContextMenuDocument {
                 "Cursor",
                 Action::ToggleProvider {
                     provider: Provider::Cursor,
+                },
+            ),
+            ContextMenuItem::action(
+                "provider-claude-account-2",
+                "Claude Account 2",
+                Action::ToggleProvider {
+                    provider: Provider::ClaudeAccount2,
+                },
+            ),
+            ContextMenuItem::action(
+                "provider-claude-account-3",
+                "Claude Account 3",
+                Action::ToggleProvider {
+                    provider: Provider::ClaudeAccount3,
+                },
+            ),
+            ContextMenuItem::action(
+                "provider-claude-account-4",
+                "Claude Account 4",
+                Action::ToggleProvider {
+                    provider: Provider::ClaudeAccount4,
                 },
             ),
         ],

@@ -567,9 +567,10 @@ fn starter_theme_round_trips_and_validates() {
         .collect::<Vec<_>>();
     // Classic contains separate light and dark progress layers so the
     // 1.4.9 palette follows the taskbar mode without runtime recolouring:
-    // five providers over two windows in two modes, plus a credit overlay on
-    // the weekly row of the two providers that report credits.
-    assert_eq!(segments, vec![10; 5 * 2 * 2 + 2 * 2]);
+    // eight providers (five services plus three extra named Claude account
+    // slots) over two windows in two modes, plus a credit overlay on the
+    // weekly row of the five providers that can report credits.
+    assert_eq!(segments, vec![10; 8 * 2 * 2 + 5 * 2]);
     assert!(theme.surfaces[0]
         .children
         .iter()
@@ -1114,7 +1115,7 @@ fn starter_adapts_width_segments_and_collapsed_provider_rows() {
         ),
         (
             ThemeRuntime::from_providers(ProviderSet::from_enabled(ProviderId::ALL)),
-            545,
+            815,
             2,
         ),
     ] {
@@ -1190,7 +1191,7 @@ fn starter_has_a_taskbar_widget_and_provider_tray_icons() {
         theme.surfaces[0].placement.reference.region,
         ReferenceRegion::SystemTray
     );
-    assert_eq!(theme.surfaces.len(), 6);
+    assert_eq!(theme.surfaces.len(), 9);
     assert!(theme.surfaces[1..]
         .iter()
         .all(|surface| surface.placement.nest == SurfaceNest::TrayIcon));
@@ -1235,9 +1236,9 @@ fn starter_tray_icons_follow_enabled_providers() {
     let theme = ThemeDocument::starter();
     let runtime = ThemeRuntime::new(false, true, false);
     assert!(!surface_should_render(&theme, 1, None, runtime));
-    assert!(surface_should_render(&theme, 2, None, runtime));
-    assert!(!surface_should_render(&theme, 3, None, runtime));
-    let rendered = render_theme_surface_with_runtime(&theme, 2, None, runtime);
+    assert!(surface_should_render(&theme, 5, None, runtime));
+    assert!(!surface_should_render(&theme, 6, None, runtime));
+    let rendered = render_theme_surface_with_runtime(&theme, 5, None, runtime);
     assert_eq!((rendered.width, rendered.height), (64, 64));
     assert!(rendered.pixels.iter().any(|pixel| pixel >> 24 > 0));
 }

@@ -43,12 +43,14 @@ pub(super) unsafe extern "system" fn wnd_proc(
                                 s.auth_error_paused_polling,
                                 s.auth_watch_mode,
                                 s.auth_watch_snapshot.clone(),
+                                s.claude_accounts.clone(),
                             )
                         })
                     };
                     match auth_watch {
-                        Some((true, watch_mode, previous_snapshot)) => {
-                            let current_snapshot = poller::credential_watch_snapshot(watch_mode);
+                        Some((true, watch_mode, previous_snapshot, claude_accounts)) => {
+                            let current_snapshot =
+                                poller::credential_watch_snapshot(watch_mode, &claude_accounts);
                             if current_snapshot != previous_snapshot {
                                 let mut state = lock_state();
                                 if let Some(s) = state.as_mut() {
@@ -62,7 +64,7 @@ pub(super) unsafe extern "system" fn wnd_proc(
                                 request_poll(hwnd);
                             }
                         }
-                        Some((false, _, _)) => {
+                        Some((false, _, _, _)) => {
                             request_scheduled_poll(hwnd);
                         }
                         None => {}

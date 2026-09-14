@@ -73,7 +73,10 @@ impl StudioApp {
                 );
             });
             section(ui, language.text("Providers"), |ui| {
-                for (index, descriptor) in PROVIDER_DESCRIPTORS.iter().enumerate() {
+                let providers = PROVIDER_DESCRIPTORS
+                    .iter()
+                    .filter(|descriptor| descriptor.id.extra_claude_account_index().is_none());
+                for (index, descriptor) in providers.enumerate() {
                     if index > 0 {
                         setting_separator(ui);
                     }
@@ -89,6 +92,64 @@ impl StudioApp {
                                 .changed()
                             {
                                 changed |= self.settings.toggle_provider(descriptor.id);
+                            }
+                        },
+                    );
+                }
+            });
+            section(ui, language.text("Claude accounts"), |ui| {
+                ui.label(language.text(
+                    "Point additional slots at a separate Claude Code config directory (the same one CLAUDE_CONFIG_DIR uses) to track more than one account.",
+                ));
+                for provider in ProviderId::EXTRA_CLAUDE_ACCOUNTS {
+                    setting_separator(ui);
+                    let descriptor = provider.descriptor();
+                    setting_row(
+                        ui,
+                        language.text(descriptor.display_name),
+                        language.text(descriptor.settings_description),
+                        |ui| {
+                            let mut enabled = self.settings.provider_enabled(provider);
+                            if Toggle::new(&mut enabled)
+                                .labels(language.text("Enabled"), language.text("Disabled"))
+                                .show(ui)
+                                .changed()
+                            {
+                                changed |= self.settings.toggle_provider(provider);
+                            }
+                        },
+                    );
+                    setting_row(ui, language.text("Account name"), "", |ui| {
+                        let mut name = self.settings.claude_account_name(provider).to_string();
+                        if ui
+                            .add(
+                                singleline_text_edit(&mut name)
+                                    .hint_text(language.text(descriptor.display_name))
+                                    .desired_width(220.0),
+                            )
+                            .changed()
+                        {
+                            self.settings.set_claude_account_name(provider, name);
+                            changed = true;
+                        }
+                    });
+                    setting_row(
+                        ui,
+                        language.text("Credential directory"),
+                        language.text("Folder containing .credentials.json"),
+                        |ui| {
+                            let mut config_dir =
+                                self.settings.claude_account_config_dir(provider).to_string();
+                            if ui
+                                .add(
+                                    singleline_text_edit(&mut config_dir)
+                                        .hint_text("C:\\Users\\you\\.claude-work")
+                                        .desired_width(320.0),
+                                )
+                                .changed()
+                            {
+                                self.settings.set_claude_account_config_dir(provider, config_dir);
+                                changed = true;
                             }
                         },
                     );

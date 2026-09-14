@@ -120,7 +120,14 @@ fn iso8601_parser_validates_calendar_and_time_fields() {
 
 #[test]
 fn every_registered_provider_has_a_poller() {
+    // The three additional named Claude account slots carry a runtime
+    // credential-directory override that a bare `fn` pointer can't hold, so
+    // `poll_provider`/`credential_watch_snapshot` route them around
+    // `PROVIDER_POLLERS` entirely instead of registering them here.
     for provider in ProviderId::ALL {
+        if provider.extra_claude_account_index().is_some() {
+            continue;
+        }
         assert!(
             provider_poller(provider).is_some(),
             "{} is missing a poller registration",
@@ -136,9 +143,7 @@ fn claude_failure_does_not_block_codex_when_both_are_enabled() {
         |provider| match provider {
             ProviderId::Claude => Err(PollError::AuthRequired),
             ProviderId::Codex => Ok(usage_with_session_percent(42.0)),
-            ProviderId::Antigravity => unreachable!("antigravity is disabled"),
-            ProviderId::OpenCode => unreachable!("OpenCode is disabled"),
-            ProviderId::Cursor => unreachable!("Cursor is disabled"),
+            _ => unreachable!("provider is disabled"),
         },
     )
     .expect("codex data should keep the poll successful");
@@ -157,9 +162,7 @@ fn codex_failure_does_not_block_claude_when_both_are_enabled() {
         |provider| match provider {
             ProviderId::Claude => Ok(usage_with_session_percent(64.0)),
             ProviderId::Codex => Err(PollError::RequestFailed),
-            ProviderId::Antigravity => unreachable!("antigravity is disabled"),
-            ProviderId::OpenCode => unreachable!("OpenCode is disabled"),
-            ProviderId::Cursor => unreachable!("Cursor is disabled"),
+            _ => unreachable!("provider is disabled"),
         },
     )
     .expect("claude data should keep the poll successful");
@@ -178,9 +181,7 @@ fn returns_first_error_when_no_enabled_provider_succeeds() {
         |provider| match provider {
             ProviderId::Claude => Err(PollError::AuthRequired),
             ProviderId::Codex => Err(PollError::RequestFailed),
-            ProviderId::Antigravity => Err(PollError::NoCredentials),
-            ProviderId::OpenCode => Err(PollError::NoCredentials),
-            ProviderId::Cursor => Err(PollError::NoCredentials),
+            _ => Err(PollError::NoCredentials),
         },
     )
     .expect_err("all-provider failure should return an error");
@@ -243,11 +244,9 @@ fn antigravity_failure_does_not_block_codex_when_both_are_enabled() {
     let data = poll_with(
         ProviderSet::from_enabled([ProviderId::Codex, ProviderId::Antigravity]),
         |provider| match provider {
-            ProviderId::Claude => unreachable!("claude code is disabled"),
             ProviderId::Codex => Ok(usage_with_session_percent(42.0)),
             ProviderId::Antigravity => Err(PollError::NoCredentials),
-            ProviderId::OpenCode => unreachable!("OpenCode is disabled"),
-            ProviderId::Cursor => unreachable!("Cursor is disabled"),
+            _ => unreachable!("provider is disabled"),
         },
     )
     .expect("codex data should keep the poll successful");
@@ -264,11 +263,9 @@ fn opencode_failure_does_not_block_codex_when_both_are_enabled() {
     let data = poll_with(
         ProviderSet::from_enabled([ProviderId::Codex, ProviderId::OpenCode]),
         |provider| match provider {
-            ProviderId::Claude => unreachable!("Claude Code is disabled"),
             ProviderId::Codex => Ok(usage_with_session_percent(42.0)),
-            ProviderId::Antigravity => unreachable!("Antigravity is disabled"),
             ProviderId::OpenCode => Err(PollError::NoCredentials),
-            ProviderId::Cursor => unreachable!("Cursor is disabled"),
+            _ => unreachable!("provider is disabled"),
         },
     )
     .expect("Codex data should keep the poll successful");

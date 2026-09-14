@@ -86,6 +86,35 @@ pub(super) fn poll_claude_code() -> Result<UsageData, PollError> {
     fetch_usage_with_fallback(&creds.access_token)
 }
 
+/// Poll a named, directory-scoped Claude account (mirrors the CLI's
+/// `CLAUDE_CONFIG_DIR`). Unlike `poll_claude_code`, this never falls back to
+/// the desktop app or WSL: those sources are ambiguous for a specific named
+/// account, so a missing or invalid file here means "not signed in", not
+/// "try somewhere else."
+pub(super) fn poll_claude_account(config_dir: &Path) -> Result<UsageData, PollError> {
+    let source = CredentialSource::Windows(config_dir.join(".credentials.json"));
+    let creds = match read_credentials_from_source(&source) {
+        Some(c) => c,
+        None => {
+            diagnose::log(format!(
+                "poll failed: no Claude credentials found in {}",
+                config_dir.display()
+            ));
+            return Err(PollError::NoCredentials);
+        }
+    };
+
+    let creds = refresh_account_or_fallback(creds, config_dir)?;
+
+    fetch_usage_with_fallback(&creds.access_token)
+}
+
+/// Watch signature for a directory-scoped account's credential file, so
+/// login/logout on an extra account still triggers an immediate re-poll.
+pub(super) fn credential_watch_signature_for(config_dir: &Path) -> String {
+    windows_credential_watch_signature(&config_dir.join(".credentials.json"))
+}
+
 pub(super) fn fetch_usage_with_fallback(token: &str) -> Result<UsageData, PollError> {
     // Try the dedicated usage endpoint first
     if let Some(data) = try_usage_endpoint(token)? {
@@ -374,6 +403,37 @@ fn refresh_or_fallback(mut credentials: Credentials) -> Result<Credentials, Poll
     }
 }
 
+/// Like `refresh_or_fallback`, but for a single directory-scoped account:
+/// there is only one source, so a failed refresh is a hard failure rather
+/// than a reason to try the next credential source.
+fn refresh_account_or_fallback(
+    credentials: Credentials,
+    config_dir: &Path,
+) -> Result<Credentials, PollError> {
+    if !is_token_expired(credentials.expires_at) {
+        return Ok(credentials);
+    }
+
+    cli_refresh_windows_token_for(config_dir);
+
+    let source = credentials.source.clone();
+    match read_credentials_from_source(&source) {
+        Some(refreshed) if !is_token_expired(refreshed.expires_at) => Ok(refreshed),
+        Some(_) => {
+            diagnose::log(format!(
+                "credentials from {source:?} still expired after refresh attempt"
+            ));
+            Err(PollError::TokenExpired)
+        }
+        None => {
+            diagnose::log(format!(
+                "credentials from {source:?} unavailable after refresh attempt"
+            ));
+            Err(PollError::TokenExpired)
+        }
+    }
+}
+
 fn cli_refresh_token(source: &CredentialSource) {
     match source {
         CredentialSource::Windows(_) => cli_refresh_windows_token(),
@@ -387,6 +447,17 @@ fn cli_refresh_token(source: &CredentialSource) {
 }
 
 fn cli_refresh_windows_token() {
+    cli_refresh_windows_token_with_dir(None);
+}
+
+/// Refreshes a specific named account's token by pointing the CLI at its
+/// credential directory via `CLAUDE_CONFIG_DIR`, the same variable the user
+/// sets by hand to switch accounts.
+fn cli_refresh_windows_token_for(config_dir: &Path) {
+    cli_refresh_windows_token_with_dir(Some(config_dir));
+}
+
+fn cli_refresh_windows_token_with_dir(config_dir: Option<&Path>) {
     let claude_path = resolve_windows_claude_path();
     let is_cmd = claude_path.to_lowercase().ends_with(".cmd");
     diagnose::log(format!(
@@ -410,6 +481,9 @@ fn cli_refresh_windows_token() {
         .stdin(std::process::Stdio::null())
         .stdout(std::process::Stdio::null())
         .stderr(std::process::Stdio::null());
+    if let Some(config_dir) = config_dir {
+        command.env("CLAUDE_CONFIG_DIR", config_dir);
+    }
 
     let mut child = match command.spawn() {
         Ok(child) => child,

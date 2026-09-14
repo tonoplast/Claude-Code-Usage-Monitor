@@ -45,7 +45,7 @@ use crate::font_catalog::installed_font_families;
 use crate::localization::{self, LanguageId};
 use crate::models::AppUsageData;
 use crate::native_interop::{self, WM_APP_REFRESH_NOW, WM_APP_SETTINGS_UPDATED};
-use crate::providers::PROVIDER_DESCRIPTORS;
+use crate::providers::{ProviderId, PROVIDER_DESCRIPTORS};
 use crate::theme_engine::{
     self, Canvas, ChildAlignment, ChildLayout, DataContext, Expression, FontRendering, FontWeight,
     HorizontalAnchor, ImageFit, LayerBackground, MouseActionOverrideKey, MouseActionProperty,

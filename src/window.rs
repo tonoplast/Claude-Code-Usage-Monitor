@@ -93,6 +93,10 @@ struct AppState {
     install_channel: InstallChannel,
 
     providers: ProviderSet,
+    /// Name and credential-directory pairs for the three additional named
+    /// Claude account slots, cached from settings so label lookups and polls
+    /// don't need to reload settings from disk.
+    claude_accounts: poller::ClaudeAccountConfigs,
 
     data: Option<AppUsageData>,
 
@@ -561,9 +565,27 @@ fn save_settings_or_log(settings: &SettingsFile, context: &str) {
     }
 }
 
+/// A provider's display label: the user's own account name for one of the
+/// additional named Claude account slots (once they've typed one), otherwise
+/// the translated catalogue display name.
+fn provider_label(
+    provider: ProviderId,
+    claude_accounts: &poller::ClaudeAccountConfigs,
+    language: LanguageId,
+) -> String {
+    if let Some(index) = provider.extra_claude_account_index() {
+        let name = claude_accounts[index].0.trim();
+        if !name.is_empty() {
+            return name.to_string();
+        }
+    }
+    language.text(provider.descriptor().display_name).to_string()
+}
+
 fn tray_usage_summary_lines(
     data: &AppUsageData,
     providers: ProviderSet,
+    claude_accounts: &poller::ClaudeAccountConfigs,
     language: LanguageId,
     countdown: bool,
 ) -> Vec<String> {
@@ -579,14 +601,13 @@ fn tray_usage_summary_lines(
         .iter()
         .filter_map(|provider| {
             let usage = data.get(provider)?;
-            let descriptor = provider.descriptor();
             let weekly_label = usage
                 .weekly_label
                 .as_deref()
                 .unwrap_or(strings.weekly_window);
             Some(format!(
                 "{} {}: {:.0}% | {}: {:.0}%",
-                language.text(descriptor.display_name),
+                provider_label(provider, claude_accounts, language),
                 strings.session_window,
                 shown(usage.session.percentage),
                 weekly_label,
@@ -605,6 +626,7 @@ fn tray_usage_summary_from_state() -> Option<String> {
     let lines = tray_usage_summary_lines(
         state.data.as_ref()?,
         state.providers,
+        &state.claude_accounts,
         state.language,
         state.usage_countdown,
     );
@@ -1812,6 +1834,7 @@ pub fn run() {
                 language,
                 install_channel,
                 providers: settings.enabled_providers(),
+                claude_accounts: settings.claude_account_configs(),
                 data: None,
                 poll_interval_ms: settings.poll_interval_ms,
                 retry_count: 0,
@@ -2103,15 +2126,15 @@ fn poll_worker(send_hwnd: SendHwnd) {
 }
 
 fn do_poll_once(hwnd: HWND) {
-    let enabled_providers = {
+    let (enabled_providers, claude_accounts) = {
         let state = lock_state();
         state
             .as_ref()
-            .map(|state| state.providers)
+            .map(|state| (state.providers, state.claude_accounts.clone()))
             .unwrap_or_default()
     };
 
-    match poller::poll(enabled_providers) {
+    match poller::poll(enabled_providers, &claude_accounts) {
         Ok(data) => {
             let mut state = lock_state();
             let data = match state.as_ref().and_then(|s| s.data.as_ref()) {
@@ -2156,11 +2179,11 @@ fn do_poll_once(hwnd: HWND) {
             let auth_watch = match failure.error {
                 poller::PollError::AuthRequired | poller::PollError::TokenExpired => {
                     let mode = poller::CredentialWatchMode::ActiveSource(failure.provider);
-                    Some((mode, poller::credential_watch_snapshot(mode)))
+                    Some((mode, poller::credential_watch_snapshot(mode, &claude_accounts)))
                 }
                 poller::PollError::NoCredentials => {
                     let mode = poller::CredentialWatchMode::AllSources(failure.provider);
-                    Some((mode, poller::credential_watch_snapshot(mode)))
+                    Some((mode, poller::credential_watch_snapshot(mode, &claude_accounts)))
                 }
                 poller::PollError::RequestFailed => None,
             };
@@ -2361,9 +2384,12 @@ fn reload_external_settings(hwnd: HWND) {
         let Some(state) = state.as_mut() else {
             return;
         };
-        providers_changed = state.providers != settings.enabled_providers();
+        let claude_accounts = settings.claude_account_configs();
+        providers_changed = state.providers != settings.enabled_providers()
+            || state.claude_accounts != claude_accounts;
         state.poll_interval_ms = settings.poll_interval_ms;
         state.providers = settings.enabled_providers();
+        state.claude_accounts = claude_accounts;
         state.usage_countdown = settings.usage_countdown;
         state.taskbar_index = settings.taskbar_index;
         apply_language_to_state(state, language_override);
@@ -2465,6 +2491,7 @@ mod tray_usage_summary_tests {
             tray_usage_summary_lines(
                 &data,
                 ProviderSet::from_enabled([ProviderId::Claude]),
+                &Default::default(),
                 LanguageId::English,
                 false,
             ),
@@ -2482,6 +2509,7 @@ mod tray_usage_summary_tests {
             tray_usage_summary_lines(
                 &data,
                 ProviderSet::from_enabled([ProviderId::Claude]),
+                &Default::default(),
                 LanguageId::English,
                 true,
             ),
@@ -2502,6 +2530,7 @@ mod tray_usage_summary_tests {
             tray_usage_summary_lines(
                 &data,
                 ProviderSet::from_enabled([ProviderId::OpenCode]),
+                &Default::default(),
                 LanguageId::English,
                 false,
             ),

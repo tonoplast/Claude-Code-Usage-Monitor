@@ -501,7 +501,15 @@ pub(super) fn format_usage_line(base: &str, context: &DataContext) -> Option<Str
     if parts.next().is_some()
         || !matches!(
             provider,
-            "active" | "claude" | "codex" | "antigravity" | "opencode" | "cursor"
+            "active"
+                | "claude"
+                | "codex"
+                | "antigravity"
+                | "opencode"
+                | "cursor"
+                | "claude_2"
+                | "claude_3"
+                | "claude_4"
         )
         || !matches!(
             window,

@@ -1305,6 +1305,894 @@
           }
         },
         {
+          "id": "claude-account-2-provider",
+          "name": "Claude Account 2 provider",
+          "render": "providers.claude_2.enabled",
+          "parent": "provider-row",
+          "width": "ceil(10 / max(1, providers.count)) * 11 - 1 + 4 + 62",
+          "height": "46"
+        },
+        {
+          "id": "claude-account-2-session-segments-dark",
+          "name": "dark Claude Account 2 5-hour segments",
+          "render": "system.dark",
+          "parent": "claude-account-2-provider",
+          "y": "5",
+          "width": "ceil(10 / max(1, providers.count)) * 11 - 1",
+          "height": "13",
+          "content": {
+            "type": "progress",
+            "value": "claude_2.session.display",
+            "direction": "left_to_right",
+            "fill": {
+              "color": "#4A90D9FF"
+            },
+            "track": {
+              "color": "#444444FF"
+            },
+            "corner_radius": "2",
+            "segments": 10,
+            "segments_expression": "ceil(10 / max(1, providers.count))",
+            "segment_gap": "1"
+          }
+        },
+        {
+          "id": "claude-account-2-session-value-dark",
+          "name": "dark Claude Account 2 5-hour value",
+          "render": "system.dark",
+          "parent": "claude-account-2-provider",
+          "x": "ceil(10 / max(1, providers.count)) * 11 - 1 + 4",
+          "y": "5",
+          "width": "62",
+          "height": "13",
+          "content": {
+            "type": "text",
+            "template": "{claude_2.session.display:usage_line}",
+            "font_family": "Segoe UI",
+            "font_size": "12",
+            "weight": "medium",
+            "rendering": "clear_type",
+            "contrast": "1",
+            "align": "left",
+            "color": {
+              "color": "#82B4E8FF"
+            }
+          }
+        },
+        {
+          "id": "claude-account-2-session-segments-light",
+          "name": "light Claude Account 2 5-hour segments",
+          "render": "1 - system.dark",
+          "parent": "claude-account-2-provider",
+          "y": "5",
+          "width": "ceil(10 / max(1, providers.count)) * 11 - 1",
+          "height": "13",
+          "content": {
+            "type": "progress",
+            "value": "claude_2.session.display",
+            "direction": "left_to_right",
+            "fill": {
+              "color": "#4A90D9FF"
+            },
+            "track": {
+              "color": "#AAAAAAFF"
+            },
+            "corner_radius": "2",
+            "segments": 10,
+            "segments_expression": "ceil(10 / max(1, providers.count))",
+            "segment_gap": "1"
+          }
+        },
+        {
+          "id": "claude-account-2-session-value-light",
+          "name": "light Claude Account 2 5-hour value",
+          "render": "1 - system.dark",
+          "parent": "claude-account-2-provider",
+          "x": "ceil(10 / max(1, providers.count)) * 11 - 1 + 4",
+          "y": "5",
+          "width": "62",
+          "height": "13",
+          "content": {
+            "type": "text",
+            "template": "{claude_2.session.display:usage_line}",
+            "font_family": "Segoe UI",
+            "font_size": "12",
+            "weight": "medium",
+            "rendering": "clear_type",
+            "contrast": "1",
+            "align": "left",
+            "color": {
+              "color": "#2E6DA4FF"
+            }
+          }
+        },
+        {
+          "id": "claude-account-2-weekly-segments-dark",
+          "name": "dark Claude Account 2 7-day segments",
+          "render": "system.dark",
+          "parent": "claude-account-2-provider",
+          "y": "28",
+          "width": "ceil(10 / max(1, providers.count)) * 11 - 1",
+          "height": "13",
+          "content": {
+            "type": "progress",
+            "value": "claude_2.weekly.display",
+            "direction": "left_to_right",
+            "fill": {
+              "color": "#4A90D9FF"
+            },
+            "track": {
+              "color": "#444444FF"
+            },
+            "corner_radius": "2",
+            "segments": 10,
+            "segments_expression": "ceil(10 / max(1, providers.count))",
+            "segment_gap": "1"
+          }
+        },
+        {
+          "id": "claude-account-2-weekly-value-dark",
+          "name": "dark Claude Account 2 7-day value",
+          "render": "(system.dark) && !claude_2.credits.available",
+          "parent": "claude-account-2-provider",
+          "x": "ceil(10 / max(1, providers.count)) * 11 - 1 + 4",
+          "y": "28",
+          "width": "62",
+          "height": "13",
+          "content": {
+            "type": "text",
+            "template": "{claude_2.weekly.display:usage_line}",
+            "font_family": "Segoe UI",
+            "font_size": "12",
+            "weight": "medium",
+            "rendering": "clear_type",
+            "contrast": "1",
+            "align": "left",
+            "color": {
+              "color": "#82B4E8FF"
+            }
+          }
+        },
+        {
+          "id": "claude-account-2-weekly-segments-light",
+          "name": "light Claude Account 2 7-day segments",
+          "render": "1 - system.dark",
+          "parent": "claude-account-2-provider",
+          "y": "28",
+          "width": "ceil(10 / max(1, providers.count)) * 11 - 1",
+          "height": "13",
+          "content": {
+            "type": "progress",
+            "value": "claude_2.weekly.display",
+            "direction": "left_to_right",
+            "fill": {
+              "color": "#4A90D9FF"
+            },
+            "track": {
+              "color": "#AAAAAAFF"
+            },
+            "corner_radius": "2",
+            "segments": 10,
+            "segments_expression": "ceil(10 / max(1, providers.count))",
+            "segment_gap": "1"
+          }
+        },
+        {
+          "id": "claude-account-2-weekly-value-light",
+          "name": "light Claude Account 2 7-day value",
+          "render": "(1 - system.dark) && !claude_2.credits.available",
+          "parent": "claude-account-2-provider",
+          "x": "ceil(10 / max(1, providers.count)) * 11 - 1 + 4",
+          "y": "28",
+          "width": "62",
+          "height": "13",
+          "content": {
+            "type": "text",
+            "template": "{claude_2.weekly.display:usage_line}",
+            "font_family": "Segoe UI",
+            "font_size": "12",
+            "weight": "medium",
+            "rendering": "clear_type",
+            "contrast": "1",
+            "align": "left",
+            "color": {
+              "color": "#2E6DA4FF"
+            }
+          }
+        },
+        {
+          "id": "claude-account-2-credits-segments-dark",
+          "name": "dark Claude Account 2 credit overlay",
+          "render": "(system.dark) && claude_2.credits.available",
+          "parent": "claude-account-2-provider",
+          "y": "28",
+          "width": "ceil(10 / max(1, providers.count)) * 11 - 1",
+          "height": "13",
+          "content": {
+            "type": "progress",
+            "value": "claude_2.credits.display",
+            "direction": "left_to_right",
+            "fill": {
+              "color": "#4A90D9FF",
+              "opacity": "1"
+            },
+            "track": {
+              "color": "#00000000",
+              "opacity": "0"
+            },
+            "corner_radius": "2",
+            "segments": 10,
+            "segments_expression": "ceil(10 / max(1, providers.count))",
+            "segment_gap": "1"
+          }
+        },
+        {
+          "id": "claude-account-2-credits-value-dark",
+          "name": "dark Claude Account 2 credit balance",
+          "render": "(system.dark) && claude_2.credits.available",
+          "parent": "claude-account-2-provider",
+          "x": "ceil(10 / max(1, providers.count)) * 11 - 1 + 4",
+          "y": "28",
+          "width": "62",
+          "height": "13",
+          "content": {
+            "type": "text",
+            "template": "${claude_2.credits.balance:0.00}",
+            "font_family": "Segoe UI",
+            "font_size": "12",
+            "weight": "medium",
+            "rendering": "clear_type",
+            "contrast": "1",
+            "align": "left",
+            "color": {
+              "color": "#F5A623FF",
+              "opacity": "1"
+            }
+          }
+        },
+        {
+          "id": "claude-account-2-credits-segments-light",
+          "name": "light Claude Account 2 credit overlay",
+          "render": "(1 - system.dark) && claude_2.credits.available",
+          "parent": "claude-account-2-provider",
+          "y": "28",
+          "width": "ceil(10 / max(1, providers.count)) * 11 - 1",
+          "height": "13",
+          "content": {
+            "type": "progress",
+            "value": "claude_2.credits.display",
+            "direction": "left_to_right",
+            "fill": {
+              "color": "#4A90D9FF",
+              "opacity": "1"
+            },
+            "track": {
+              "color": "#00000000",
+              "opacity": "0"
+            },
+            "corner_radius": "2",
+            "segments": 10,
+            "segments_expression": "ceil(10 / max(1, providers.count))",
+            "segment_gap": "1"
+          }
+        },
+        {
+          "id": "claude-account-2-credits-value-light",
+          "name": "light Claude Account 2 credit balance",
+          "render": "(1 - system.dark) && claude_2.credits.available",
+          "parent": "claude-account-2-provider",
+          "x": "ceil(10 / max(1, providers.count)) * 11 - 1 + 4",
+          "y": "28",
+          "width": "62",
+          "height": "13",
+          "content": {
+            "type": "text",
+            "template": "${claude_2.credits.balance:0.00}",
+            "font_family": "Segoe UI",
+            "font_size": "12",
+            "weight": "medium",
+            "rendering": "clear_type",
+            "contrast": "1",
+            "align": "left",
+            "color": {
+              "color": "#C77700FF",
+              "opacity": "1"
+            }
+          }
+        },
+        {
+          "id": "claude-account-3-provider",
+          "name": "Claude Account 3 provider",
+          "render": "providers.claude_3.enabled",
+          "parent": "provider-row",
+          "width": "ceil(10 / max(1, providers.count)) * 11 - 1 + 4 + 62",
+          "height": "46"
+        },
+        {
+          "id": "claude-account-3-session-segments-dark",
+          "name": "dark Claude Account 3 5-hour segments",
+          "render": "system.dark",
+          "parent": "claude-account-3-provider",
+          "y": "5",
+          "width": "ceil(10 / max(1, providers.count)) * 11 - 1",
+          "height": "13",
+          "content": {
+            "type": "progress",
+            "value": "claude_3.session.display",
+            "direction": "left_to_right",
+            "fill": {
+              "color": "#9B59B6FF"
+            },
+            "track": {
+              "color": "#444444FF"
+            },
+            "corner_radius": "2",
+            "segments": 10,
+            "segments_expression": "ceil(10 / max(1, providers.count))",
+            "segment_gap": "1"
+          }
+        },
+        {
+          "id": "claude-account-3-session-value-dark",
+          "name": "dark Claude Account 3 5-hour value",
+          "render": "system.dark",
+          "parent": "claude-account-3-provider",
+          "x": "ceil(10 / max(1, providers.count)) * 11 - 1 + 4",
+          "y": "5",
+          "width": "62",
+          "height": "13",
+          "content": {
+            "type": "text",
+            "template": "{claude_3.session.display:usage_line}",
+            "font_family": "Segoe UI",
+            "font_size": "12",
+            "weight": "medium",
+            "rendering": "clear_type",
+            "contrast": "1",
+            "align": "left",
+            "color": {
+              "color": "#C39BD3FF"
+            }
+          }
+        },
+        {
+          "id": "claude-account-3-session-segments-light",
+          "name": "light Claude Account 3 5-hour segments",
+          "render": "1 - system.dark",
+          "parent": "claude-account-3-provider",
+          "y": "5",
+          "width": "ceil(10 / max(1, providers.count)) * 11 - 1",
+          "height": "13",
+          "content": {
+            "type": "progress",
+            "value": "claude_3.session.display",
+            "direction": "left_to_right",
+            "fill": {
+              "color": "#9B59B6FF"
+            },
+            "track": {
+              "color": "#AAAAAAFF"
+            },
+            "corner_radius": "2",
+            "segments": 10,
+            "segments_expression": "ceil(10 / max(1, providers.count))",
+            "segment_gap": "1"
+          }
+        },
+        {
+          "id": "claude-account-3-session-value-light",
+          "name": "light Claude Account 3 5-hour value",
+          "render": "1 - system.dark",
+          "parent": "claude-account-3-provider",
+          "x": "ceil(10 / max(1, providers.count)) * 11 - 1 + 4",
+          "y": "5",
+          "width": "62",
+          "height": "13",
+          "content": {
+            "type": "text",
+            "template": "{claude_3.session.display:usage_line}",
+            "font_family": "Segoe UI",
+            "font_size": "12",
+            "weight": "medium",
+            "rendering": "clear_type",
+            "contrast": "1",
+            "align": "left",
+            "color": {
+              "color": "#6C3483FF"
+            }
+          }
+        },
+        {
+          "id": "claude-account-3-weekly-segments-dark",
+          "name": "dark Claude Account 3 7-day segments",
+          "render": "system.dark",
+          "parent": "claude-account-3-provider",
+          "y": "28",
+          "width": "ceil(10 / max(1, providers.count)) * 11 - 1",
+          "height": "13",
+          "content": {
+            "type": "progress",
+            "value": "claude_3.weekly.display",
+            "direction": "left_to_right",
+            "fill": {
+              "color": "#9B59B6FF"
+            },
+            "track": {
+              "color": "#444444FF"
+            },
+            "corner_radius": "2",
+            "segments": 10,
+            "segments_expression": "ceil(10 / max(1, providers.count))",
+            "segment_gap": "1"
+          }
+        },
+        {
+          "id": "claude-account-3-weekly-value-dark",
+          "name": "dark Claude Account 3 7-day value",
+          "render": "(system.dark) && !claude_3.credits.available",
+          "parent": "claude-account-3-provider",
+          "x": "ceil(10 / max(1, providers.count)) * 11 - 1 + 4",
+          "y": "28",
+          "width": "62",
+          "height": "13",
+          "content": {
+            "type": "text",
+            "template": "{claude_3.weekly.display:usage_line}",
+            "font_family": "Segoe UI",
+            "font_size": "12",
+            "weight": "medium",
+            "rendering": "clear_type",
+            "contrast": "1",
+            "align": "left",
+            "color": {
+              "color": "#C39BD3FF"
+            }
+          }
+        },
+        {
+          "id": "claude-account-3-weekly-segments-light",
+          "name": "light Claude Account 3 7-day segments",
+          "render": "1 - system.dark",
+          "parent": "claude-account-3-provider",
+          "y": "28",
+          "width": "ceil(10 / max(1, providers.count)) * 11 - 1",
+          "height": "13",
+          "content": {
+            "type": "progress",
+            "value": "claude_3.weekly.display",
+            "direction": "left_to_right",
+            "fill": {
+              "color": "#9B59B6FF"
+            },
+            "track": {
+              "color": "#AAAAAAFF"
+            },
+            "corner_radius": "2",
+            "segments": 10,
+            "segments_expression": "ceil(10 / max(1, providers.count))",
+            "segment_gap": "1"
+          }
+        },
+        {
+          "id": "claude-account-3-weekly-value-light",
+          "name": "light Claude Account 3 7-day value",
+          "render": "(1 - system.dark) && !claude_3.credits.available",
+          "parent": "claude-account-3-provider",
+          "x": "ceil(10 / max(1, providers.count)) * 11 - 1 + 4",
+          "y": "28",
+          "width": "62",
+          "height": "13",
+          "content": {
+            "type": "text",
+            "template": "{claude_3.weekly.display:usage_line}",
+            "font_family": "Segoe UI",
+            "font_size": "12",
+            "weight": "medium",
+            "rendering": "clear_type",
+            "contrast": "1",
+            "align": "left",
+            "color": {
+              "color": "#6C3483FF"
+            }
+          }
+        },
+        {
+          "id": "claude-account-3-credits-segments-dark",
+          "name": "dark Claude Account 3 credit overlay",
+          "render": "(system.dark) && claude_3.credits.available",
+          "parent": "claude-account-3-provider",
+          "y": "28",
+          "width": "ceil(10 / max(1, providers.count)) * 11 - 1",
+          "height": "13",
+          "content": {
+            "type": "progress",
+            "value": "claude_3.credits.display",
+            "direction": "left_to_right",
+            "fill": {
+              "color": "#9B59B6FF",
+              "opacity": "1"
+            },
+            "track": {
+              "color": "#00000000",
+              "opacity": "0"
+            },
+            "corner_radius": "2",
+            "segments": 10,
+            "segments_expression": "ceil(10 / max(1, providers.count))",
+            "segment_gap": "1"
+          }
+        },
+        {
+          "id": "claude-account-3-credits-value-dark",
+          "name": "dark Claude Account 3 credit balance",
+          "render": "(system.dark) && claude_3.credits.available",
+          "parent": "claude-account-3-provider",
+          "x": "ceil(10 / max(1, providers.count)) * 11 - 1 + 4",
+          "y": "28",
+          "width": "62",
+          "height": "13",
+          "content": {
+            "type": "text",
+            "template": "${claude_3.credits.balance:0.00}",
+            "font_family": "Segoe UI",
+            "font_size": "12",
+            "weight": "medium",
+            "rendering": "clear_type",
+            "contrast": "1",
+            "align": "left",
+            "color": {
+              "color": "#F5A623FF",
+              "opacity": "1"
+            }
+          }
+        },
+        {
+          "id": "claude-account-3-credits-segments-light",
+          "name": "light Claude Account 3 credit overlay",
+          "render": "(1 - system.dark) && claude_3.credits.available",
+          "parent": "claude-account-3-provider",
+          "y": "28",
+          "width": "ceil(10 / max(1, providers.count)) * 11 - 1",
+          "height": "13",
+          "content": {
+            "type": "progress",
+            "value": "claude_3.credits.display",
+            "direction": "left_to_right",
+            "fill": {
+              "color": "#9B59B6FF",
+              "opacity": "1"
+            },
+            "track": {
+              "color": "#00000000",
+              "opacity": "0"
+            },
+            "corner_radius": "2",
+            "segments": 10,
+            "segments_expression": "ceil(10 / max(1, providers.count))",
+            "segment_gap": "1"
+          }
+        },
+        {
+          "id": "claude-account-3-credits-value-light",
+          "name": "light Claude Account 3 credit balance",
+          "render": "(1 - system.dark) && claude_3.credits.available",
+          "parent": "claude-account-3-provider",
+          "x": "ceil(10 / max(1, providers.count)) * 11 - 1 + 4",
+          "y": "28",
+          "width": "62",
+          "height": "13",
+          "content": {
+            "type": "text",
+            "template": "${claude_3.credits.balance:0.00}",
+            "font_family": "Segoe UI",
+            "font_size": "12",
+            "weight": "medium",
+            "rendering": "clear_type",
+            "contrast": "1",
+            "align": "left",
+            "color": {
+              "color": "#C77700FF",
+              "opacity": "1"
+            }
+          }
+        },
+        {
+          "id": "claude-account-4-provider",
+          "name": "Claude Account 4 provider",
+          "render": "providers.claude_4.enabled",
+          "parent": "provider-row",
+          "width": "ceil(10 / max(1, providers.count)) * 11 - 1 + 4 + 62",
+          "height": "46"
+        },
+        {
+          "id": "claude-account-4-session-segments-dark",
+          "name": "dark Claude Account 4 5-hour segments",
+          "render": "system.dark",
+          "parent": "claude-account-4-provider",
+          "y": "5",
+          "width": "ceil(10 / max(1, providers.count)) * 11 - 1",
+          "height": "13",
+          "content": {
+            "type": "progress",
+            "value": "claude_4.session.display",
+            "direction": "left_to_right",
+            "fill": {
+              "color": "#26A69AFF"
+            },
+            "track": {
+              "color": "#444444FF"
+            },
+            "corner_radius": "2",
+            "segments": 10,
+            "segments_expression": "ceil(10 / max(1, providers.count))",
+            "segment_gap": "1"
+          }
+        },
+        {
+          "id": "claude-account-4-session-value-dark",
+          "name": "dark Claude Account 4 5-hour value",
+          "render": "system.dark",
+          "parent": "claude-account-4-provider",
+          "x": "ceil(10 / max(1, providers.count)) * 11 - 1 + 4",
+          "y": "5",
+          "width": "62",
+          "height": "13",
+          "content": {
+            "type": "text",
+            "template": "{claude_4.session.display:usage_line}",
+            "font_family": "Segoe UI",
+            "font_size": "12",
+            "weight": "medium",
+            "rendering": "clear_type",
+            "contrast": "1",
+            "align": "left",
+            "color": {
+              "color": "#80CBC4FF"
+            }
+          }
+        },
+        {
+          "id": "claude-account-4-session-segments-light",
+          "name": "light Claude Account 4 5-hour segments",
+          "render": "1 - system.dark",
+          "parent": "claude-account-4-provider",
+          "y": "5",
+          "width": "ceil(10 / max(1, providers.count)) * 11 - 1",
+          "height": "13",
+          "content": {
+            "type": "progress",
+            "value": "claude_4.session.display",
+            "direction": "left_to_right",
+            "fill": {
+              "color": "#26A69AFF"
+            },
+            "track": {
+              "color": "#AAAAAAFF"
+            },
+            "corner_radius": "2",
+            "segments": 10,
+            "segments_expression": "ceil(10 / max(1, providers.count))",
+            "segment_gap": "1"
+          }
+        },
+        {
+          "id": "claude-account-4-session-value-light",
+          "name": "light Claude Account 4 5-hour value",
+          "render": "1 - system.dark",
+          "parent": "claude-account-4-provider",
+          "x": "ceil(10 / max(1, providers.count)) * 11 - 1 + 4",
+          "y": "5",
+          "width": "62",
+          "height": "13",
+          "content": {
+            "type": "text",
+            "template": "{claude_4.session.display:usage_line}",
+            "font_family": "Segoe UI",
+            "font_size": "12",
+            "weight": "medium",
+            "rendering": "clear_type",
+            "contrast": "1",
+            "align": "left",
+            "color": {
+              "color": "#00695CFF"
+            }
+          }
+        },
+        {
+          "id": "claude-account-4-weekly-segments-dark",
+          "name": "dark Claude Account 4 7-day segments",
+          "render": "system.dark",
+          "parent": "claude-account-4-provider",
+          "y": "28",
+          "width": "ceil(10 / max(1, providers.count)) * 11 - 1",
+          "height": "13",
+          "content": {
+            "type": "progress",
+            "value": "claude_4.weekly.display",
+            "direction": "left_to_right",
+            "fill": {
+              "color": "#26A69AFF"
+            },
+            "track": {
+              "color": "#444444FF"
+            },
+            "corner_radius": "2",
+            "segments": 10,
+            "segments_expression": "ceil(10 / max(1, providers.count))",
+            "segment_gap": "1"
+          }
+        },
+        {
+          "id": "claude-account-4-weekly-value-dark",
+          "name": "dark Claude Account 4 7-day value",
+          "render": "(system.dark) && !claude_4.credits.available",
+          "parent": "claude-account-4-provider",
+          "x": "ceil(10 / max(1, providers.count)) * 11 - 1 + 4",
+          "y": "28",
+          "width": "62",
+          "height": "13",
+          "content": {
+            "type": "text",
+            "template": "{claude_4.weekly.display:usage_line}",
+            "font_family": "Segoe UI",
+            "font_size": "12",
+            "weight": "medium",
+            "rendering": "clear_type",
+            "contrast": "1",
+            "align": "left",
+            "color": {
+              "color": "#80CBC4FF"
+            }
+          }
+        },
+        {
+          "id": "claude-account-4-weekly-segments-light",
+          "name": "light Claude Account 4 7-day segments",
+          "render": "1 - system.dark",
+          "parent": "claude-account-4-provider",
+          "y": "28",
+          "width": "ceil(10 / max(1, providers.count)) * 11 - 1",
+          "height": "13",
+          "content": {
+            "type": "progress",
+            "value": "claude_4.weekly.display",
+            "direction": "left_to_right",
+            "fill": {
+              "color": "#26A69AFF"
+            },
+            "track": {
+              "color": "#AAAAAAFF"
+            },
+            "corner_radius": "2",
+            "segments": 10,
+            "segments_expression": "ceil(10 / max(1, providers.count))",
+            "segment_gap": "1"
+          }
+        },
+        {
+          "id": "claude-account-4-weekly-value-light",
+          "name": "light Claude Account 4 7-day value",
+          "render": "(1 - system.dark) && !claude_4.credits.available",
+          "parent": "claude-account-4-provider",
+          "x": "ceil(10 / max(1, providers.count)) * 11 - 1 + 4",
+          "y": "28",
+          "width": "62",
+          "height": "13",
+          "content": {
+            "type": "text",
+            "template": "{claude_4.weekly.display:usage_line}",
+            "font_family": "Segoe UI",
+            "font_size": "12",
+            "weight": "medium",
+            "rendering": "clear_type",
+            "contrast": "1",
+            "align": "left",
+            "color": {
+              "color": "#00695CFF"
+            }
+          }
+        },
+        {
+          "id": "claude-account-4-credits-segments-dark",
+          "name": "dark Claude Account 4 credit overlay",
+          "render": "(system.dark) && claude_4.credits.available",
+          "parent": "claude-account-4-provider",
+          "y": "28",
+          "width": "ceil(10 / max(1, providers.count)) * 11 - 1",
+          "height": "13",
+          "content": {
+            "type": "progress",
+            "value": "claude_4.credits.display",
+            "direction": "left_to_right",
+            "fill": {
+              "color": "#26A69AFF",
+              "opacity": "1"
+            },
+            "track": {
+              "color": "#00000000",
+              "opacity": "0"
+            },
+            "corner_radius": "2",
+            "segments": 10,
+            "segments_expression": "ceil(10 / max(1, providers.count))",
+            "segment_gap": "1"
+          }
+        },
+        {
+          "id": "claude-account-4-credits-value-dark",
+          "name": "dark Claude Account 4 credit balance",
+          "render": "(system.dark) && claude_4.credits.available",
+          "parent": "claude-account-4-provider",
+          "x": "ceil(10 / max(1, providers.count)) * 11 - 1 + 4",
+          "y": "28",
+          "width": "62",
+          "height": "13",
+          "content": {
+            "type": "text",
+            "template": "${claude_4.credits.balance:0.00}",
+            "font_family": "Segoe UI",
+            "font_size": "12",
+            "weight": "medium",
+            "rendering": "clear_type",
+            "contrast": "1",
+            "align": "left",
+            "color": {
+              "color": "#F5A623FF",
+              "opacity": "1"
+            }
+          }
+        },
+        {
+          "id": "claude-account-4-credits-segments-light",
+          "name": "light Claude Account 4 credit overlay",
+          "render": "(1 - system.dark) && claude_4.credits.available",
+          "parent": "claude-account-4-provider",
+          "y": "28",
+          "width": "ceil(10 / max(1, providers.count)) * 11 - 1",
+          "height": "13",
+          "content": {
+            "type": "progress",
+            "value": "claude_4.credits.display",
+            "direction": "left_to_right",
+            "fill": {
+              "color": "#26A69AFF",
+              "opacity": "1"
+            },
+            "track": {
+              "color": "#00000000",
+              "opacity": "0"
+            },
+            "corner_radius": "2",
+            "segments": 10,
+            "segments_expression": "ceil(10 / max(1, providers.count))",
+            "segment_gap": "1"
+          }
+        },
+        {
+          "id": "claude-account-4-credits-value-light",
+          "name": "light Claude Account 4 credit balance",
+          "render": "(1 - system.dark) && claude_4.credits.available",
+          "parent": "claude-account-4-provider",
+          "x": "ceil(10 / max(1, providers.count)) * 11 - 1 + 4",
+          "y": "28",
+          "width": "62",
+          "height": "13",
+          "content": {
+            "type": "text",
+            "template": "${claude_4.credits.balance:0.00}",
+            "font_family": "Segoe UI",
+            "font_size": "12",
+            "weight": "medium",
+            "rendering": "clear_type",
+            "contrast": "1",
+            "align": "left",
+            "color": {
+              "color": "#C77700FF",
+              "opacity": "1"
+            }
+          }
+        },
+        {
           "id": "codex-credits-segments-dark",
           "name": "dark codex credit overlay",
           "render": "(system.dark) && codex.credits.available",
@@ -1616,6 +2504,669 @@
           "content": {
             "type": "text",
             "template": "{claude.credits.balance / 1000:0.0}k",
+            "font_family": "Arial Bold",
+            "font_size": "30",
+            "weight": "bold",
+            "align": "center",
+            "color": {
+              "color": "#FFFFFFFF"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "claude-account-2-tray-icon",
+      "name": "Claude Account 2 usage",
+      "render": "providers.claude_2.enabled",
+      "mouse_events": {
+        "click": "toggle(\"main\", render)",
+        "double_click": "toggle(\"main\", render)",
+        "right_click": "show_context_menu(\"classic-v1\")"
+      },
+      "placement": {
+        "nest": "tray_icon"
+      },
+      "width": "64",
+      "height": "64",
+      "background": {
+        "type": "colour",
+        "colour": {
+          "color": "#4A90D9FF"
+        }
+      },
+      "corner_radius": "1",
+      "children": [
+        {
+          "id": "claude-account-2-tray-70-color",
+          "name": "Claude Account 2 50 to 70 percent colour transition",
+          "render": "claude_2.headline.percentage > 50",
+          "parent": "claude-account-2-tray-icon",
+          "width": "64",
+          "height": "64",
+          "background": {
+            "type": "colour",
+            "colour": {
+              "color": "#D08540FF",
+              "opacity": "clamp((claude_2.session.percentage - 50) / 20, 0, 1)"
+            }
+          },
+          "corner_radius": "1"
+        },
+        {
+          "id": "claude-account-2-tray-85-color",
+          "name": "Claude Account 2 70 to 85 percent colour transition",
+          "render": "claude_2.headline.percentage > 70",
+          "parent": "claude-account-2-tray-icon",
+          "width": "64",
+          "height": "64",
+          "background": {
+            "type": "colour",
+            "colour": {
+              "color": "#CC8C20FF",
+              "opacity": "clamp((claude_2.session.percentage - 70) / 15, 0, 1)"
+            }
+          },
+          "corner_radius": "1"
+        },
+        {
+          "id": "claude-account-2-tray-95-color",
+          "name": "Claude Account 2 85 to 95 percent colour transition",
+          "render": "claude_2.headline.percentage > 85",
+          "parent": "claude-account-2-tray-icon",
+          "width": "64",
+          "height": "64",
+          "background": {
+            "type": "colour",
+            "colour": {
+              "color": "#C45020FF",
+              "opacity": "clamp((claude_2.session.percentage - 85) / 10, 0, 1)"
+            }
+          },
+          "corner_radius": "1"
+        },
+        {
+          "id": "claude-account-2-tray-100-color",
+          "name": "Claude Account 2 95 to 100 percent colour transition",
+          "render": "claude_2.headline.percentage > 95",
+          "parent": "claude-account-2-tray-icon",
+          "width": "64",
+          "height": "64",
+          "background": {
+            "type": "colour",
+            "colour": {
+              "color": "#B82020FF",
+              "opacity": "clamp((claude_2.session.percentage - 95) / 5, 0, 1)"
+            }
+          },
+          "corner_radius": "1"
+        },
+        {
+          "id": "claude-account-2-tray-one-digit",
+          "name": "Claude Account 2 one-digit percentage",
+          "render": "(data.poll_ok && claude_2.available && claude_2.headline.display < 9.5) && claude_2.credits.available == 0",
+          "parent": "claude-account-2-tray-icon",
+          "width": "64",
+          "height": "64",
+          "content": {
+            "type": "text",
+            "template": "{claude_2.headline.display:0}",
+            "font_family": "Arial Bold",
+            "font_size": "50",
+            "weight": "bold",
+            "align": "center",
+            "color": {
+              "color": "#FFFFFFFF"
+            }
+          }
+        },
+        {
+          "id": "claude-account-2-tray-two-digits",
+          "name": "Claude Account 2 two-digit percentage",
+          "render": "(data.poll_ok && claude_2.available && claude_2.headline.display >= 9.5 && claude_2.headline.display < 99.5) && claude_2.credits.available == 0",
+          "parent": "claude-account-2-tray-icon",
+          "width": "64",
+          "height": "64",
+          "content": {
+            "type": "text",
+            "template": "{claude_2.headline.display:0}",
+            "font_family": "Arial Bold",
+            "font_size": "42",
+            "weight": "bold",
+            "align": "center",
+            "color": {
+              "color": "#FFFFFFFF"
+            }
+          }
+        },
+        {
+          "id": "claude-account-2-tray-three-digits",
+          "name": "Claude Account 2 three-digit percentage",
+          "render": "(data.poll_ok && claude_2.available && claude_2.headline.display >= 99.5) && claude_2.credits.available == 0",
+          "parent": "claude-account-2-tray-icon",
+          "width": "64",
+          "height": "64",
+          "content": {
+            "type": "text",
+            "template": "{claude_2.headline.display:0}",
+            "font_family": "Arial Bold",
+            "font_size": "30",
+            "weight": "bold",
+            "align": "center",
+            "color": {
+              "color": "#FFFFFFFF"
+            }
+          }
+        },
+        {
+          "id": "claude-account-2-tray-credit-one-digit",
+          "name": "claude_2 credit balance badge",
+          "render": "data.poll_ok && claude_2.available && claude_2.credits.available && claude_2.credits.balance < 9.5",
+          "parent": "claude-account-2-tray-icon",
+          "width": "64",
+          "height": "64",
+          "content": {
+            "type": "text",
+            "template": "{claude_2.credits.balance:0}",
+            "font_family": "Arial Bold",
+            "font_size": "50",
+            "weight": "bold",
+            "align": "center",
+            "color": {
+              "color": "#FFFFFFFF"
+            }
+          }
+        },
+        {
+          "id": "claude-account-2-tray-credit-two-digits",
+          "name": "claude_2 credit balance badge",
+          "render": "data.poll_ok && claude_2.available && claude_2.credits.available && claude_2.credits.balance >= 9.5 && claude_2.credits.balance < 99.5",
+          "parent": "claude-account-2-tray-icon",
+          "width": "64",
+          "height": "64",
+          "content": {
+            "type": "text",
+            "template": "{claude_2.credits.balance:0}",
+            "font_family": "Arial Bold",
+            "font_size": "42",
+            "weight": "bold",
+            "align": "center",
+            "color": {
+              "color": "#FFFFFFFF"
+            }
+          }
+        },
+        {
+          "id": "claude-account-2-tray-credit-three-digits",
+          "name": "claude_2 credit balance badge",
+          "render": "data.poll_ok && claude_2.available && claude_2.credits.available && claude_2.credits.balance >= 99.5 && claude_2.credits.balance < 999.5",
+          "parent": "claude-account-2-tray-icon",
+          "width": "64",
+          "height": "64",
+          "content": {
+            "type": "text",
+            "template": "{claude_2.credits.balance:0}",
+            "font_family": "Arial Bold",
+            "font_size": "30",
+            "weight": "bold",
+            "align": "center",
+            "color": {
+              "color": "#FFFFFFFF"
+            }
+          }
+        },
+        {
+          "id": "claude-account-2-tray-credit-thousands",
+          "name": "claude_2 credit balance badge",
+          "render": "data.poll_ok && claude_2.available && claude_2.credits.available && claude_2.credits.balance >= 999.5",
+          "parent": "claude-account-2-tray-icon",
+          "width": "64",
+          "height": "64",
+          "content": {
+            "type": "text",
+            "template": "{claude_2.credits.balance / 1000:0.0}k",
+            "font_family": "Arial Bold",
+            "font_size": "30",
+            "weight": "bold",
+            "align": "center",
+            "color": {
+              "color": "#FFFFFFFF"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "claude-account-3-tray-icon",
+      "name": "Claude Account 3 usage",
+      "render": "providers.claude_3.enabled",
+      "mouse_events": {
+        "click": "toggle(\"main\", render)",
+        "double_click": "toggle(\"main\", render)",
+        "right_click": "show_context_menu(\"classic-v1\")"
+      },
+      "placement": {
+        "nest": "tray_icon"
+      },
+      "width": "64",
+      "height": "64",
+      "background": {
+        "type": "colour",
+        "colour": {
+          "color": "#9B59B6FF"
+        }
+      },
+      "corner_radius": "1",
+      "children": [
+        {
+          "id": "claude-account-3-tray-70-color",
+          "name": "Claude Account 3 50 to 70 percent colour transition",
+          "render": "claude_3.headline.percentage > 50",
+          "parent": "claude-account-3-tray-icon",
+          "width": "64",
+          "height": "64",
+          "background": {
+            "type": "colour",
+            "colour": {
+              "color": "#D08540FF",
+              "opacity": "clamp((claude_3.session.percentage - 50) / 20, 0, 1)"
+            }
+          },
+          "corner_radius": "1"
+        },
+        {
+          "id": "claude-account-3-tray-85-color",
+          "name": "Claude Account 3 70 to 85 percent colour transition",
+          "render": "claude_3.headline.percentage > 70",
+          "parent": "claude-account-3-tray-icon",
+          "width": "64",
+          "height": "64",
+          "background": {
+            "type": "colour",
+            "colour": {
+              "color": "#CC8C20FF",
+              "opacity": "clamp((claude_3.session.percentage - 70) / 15, 0, 1)"
+            }
+          },
+          "corner_radius": "1"
+        },
+        {
+          "id": "claude-account-3-tray-95-color",
+          "name": "Claude Account 3 85 to 95 percent colour transition",
+          "render": "claude_3.headline.percentage > 85",
+          "parent": "claude-account-3-tray-icon",
+          "width": "64",
+          "height": "64",
+          "background": {
+            "type": "colour",
+            "colour": {
+              "color": "#C45020FF",
+              "opacity": "clamp((claude_3.session.percentage - 85) / 10, 0, 1)"
+            }
+          },
+          "corner_radius": "1"
+        },
+        {
+          "id": "claude-account-3-tray-100-color",
+          "name": "Claude Account 3 95 to 100 percent colour transition",
+          "render": "claude_3.headline.percentage > 95",
+          "parent": "claude-account-3-tray-icon",
+          "width": "64",
+          "height": "64",
+          "background": {
+            "type": "colour",
+            "colour": {
+              "color": "#B82020FF",
+              "opacity": "clamp((claude_3.session.percentage - 95) / 5, 0, 1)"
+            }
+          },
+          "corner_radius": "1"
+        },
+        {
+          "id": "claude-account-3-tray-one-digit",
+          "name": "Claude Account 3 one-digit percentage",
+          "render": "(data.poll_ok && claude_3.available && claude_3.headline.display < 9.5) && claude_3.credits.available == 0",
+          "parent": "claude-account-3-tray-icon",
+          "width": "64",
+          "height": "64",
+          "content": {
+            "type": "text",
+            "template": "{claude_3.headline.display:0}",
+            "font_family": "Arial Bold",
+            "font_size": "50",
+            "weight": "bold",
+            "align": "center",
+            "color": {
+              "color": "#FFFFFFFF"
+            }
+          }
+        },
+        {
+          "id": "claude-account-3-tray-two-digits",
+          "name": "Claude Account 3 two-digit percentage",
+          "render": "(data.poll_ok && claude_3.available && claude_3.headline.display >= 9.5 && claude_3.headline.display < 99.5) && claude_3.credits.available == 0",
+          "parent": "claude-account-3-tray-icon",
+          "width": "64",
+          "height": "64",
+          "content": {
+            "type": "text",
+            "template": "{claude_3.headline.display:0}",
+            "font_family": "Arial Bold",
+            "font_size": "42",
+            "weight": "bold",
+            "align": "center",
+            "color": {
+              "color": "#FFFFFFFF"
+            }
+          }
+        },
+        {
+          "id": "claude-account-3-tray-three-digits",
+          "name": "Claude Account 3 three-digit percentage",
+          "render": "(data.poll_ok && claude_3.available && claude_3.headline.display >= 99.5) && claude_3.credits.available == 0",
+          "parent": "claude-account-3-tray-icon",
+          "width": "64",
+          "height": "64",
+          "content": {
+            "type": "text",
+            "template": "{claude_3.headline.display:0}",
+            "font_family": "Arial Bold",
+            "font_size": "30",
+            "weight": "bold",
+            "align": "center",
+            "color": {
+              "color": "#FFFFFFFF"
+            }
+          }
+        },
+        {
+          "id": "claude-account-3-tray-credit-one-digit",
+          "name": "claude_3 credit balance badge",
+          "render": "data.poll_ok && claude_3.available && claude_3.credits.available && claude_3.credits.balance < 9.5",
+          "parent": "claude-account-3-tray-icon",
+          "width": "64",
+          "height": "64",
+          "content": {
+            "type": "text",
+            "template": "{claude_3.credits.balance:0}",
+            "font_family": "Arial Bold",
+            "font_size": "50",
+            "weight": "bold",
+            "align": "center",
+            "color": {
+              "color": "#FFFFFFFF"
+            }
+          }
+        },
+        {
+          "id": "claude-account-3-tray-credit-two-digits",
+          "name": "claude_3 credit balance badge",
+          "render": "data.poll_ok && claude_3.available && claude_3.credits.available && claude_3.credits.balance >= 9.5 && claude_3.credits.balance < 99.5",
+          "parent": "claude-account-3-tray-icon",
+          "width": "64",
+          "height": "64",
+          "content": {
+            "type": "text",
+            "template": "{claude_3.credits.balance:0}",
+            "font_family": "Arial Bold",
+            "font_size": "42",
+            "weight": "bold",
+            "align": "center",
+            "color": {
+              "color": "#FFFFFFFF"
+            }
+          }
+        },
+        {
+          "id": "claude-account-3-tray-credit-three-digits",
+          "name": "claude_3 credit balance badge",
+          "render": "data.poll_ok && claude_3.available && claude_3.credits.available && claude_3.credits.balance >= 99.5 && claude_3.credits.balance < 999.5",
+          "parent": "claude-account-3-tray-icon",
+          "width": "64",
+          "height": "64",
+          "content": {
+            "type": "text",
+            "template": "{claude_3.credits.balance:0}",
+            "font_family": "Arial Bold",
+            "font_size": "30",
+            "weight": "bold",
+            "align": "center",
+            "color": {
+              "color": "#FFFFFFFF"
+            }
+          }
+        },
+        {
+          "id": "claude-account-3-tray-credit-thousands",
+          "name": "claude_3 credit balance badge",
+          "render": "data.poll_ok && claude_3.available && claude_3.credits.available && claude_3.credits.balance >= 999.5",
+          "parent": "claude-account-3-tray-icon",
+          "width": "64",
+          "height": "64",
+          "content": {
+            "type": "text",
+            "template": "{claude_3.credits.balance / 1000:0.0}k",
+            "font_family": "Arial Bold",
+            "font_size": "30",
+            "weight": "bold",
+            "align": "center",
+            "color": {
+              "color": "#FFFFFFFF"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "claude-account-4-tray-icon",
+      "name": "Claude Account 4 usage",
+      "render": "providers.claude_4.enabled",
+      "mouse_events": {
+        "click": "toggle(\"main\", render)",
+        "double_click": "toggle(\"main\", render)",
+        "right_click": "show_context_menu(\"classic-v1\")"
+      },
+      "placement": {
+        "nest": "tray_icon"
+      },
+      "width": "64",
+      "height": "64",
+      "background": {
+        "type": "colour",
+        "colour": {
+          "color": "#26A69AFF"
+        }
+      },
+      "corner_radius": "1",
+      "children": [
+        {
+          "id": "claude-account-4-tray-70-color",
+          "name": "Claude Account 4 50 to 70 percent colour transition",
+          "render": "claude_4.headline.percentage > 50",
+          "parent": "claude-account-4-tray-icon",
+          "width": "64",
+          "height": "64",
+          "background": {
+            "type": "colour",
+            "colour": {
+              "color": "#D08540FF",
+              "opacity": "clamp((claude_4.session.percentage - 50) / 20, 0, 1)"
+            }
+          },
+          "corner_radius": "1"
+        },
+        {
+          "id": "claude-account-4-tray-85-color",
+          "name": "Claude Account 4 70 to 85 percent colour transition",
+          "render": "claude_4.headline.percentage > 70",
+          "parent": "claude-account-4-tray-icon",
+          "width": "64",
+          "height": "64",
+          "background": {
+            "type": "colour",
+            "colour": {
+              "color": "#CC8C20FF",
+              "opacity": "clamp((claude_4.session.percentage - 70) / 15, 0, 1)"
+            }
+          },
+          "corner_radius": "1"
+        },
+        {
+          "id": "claude-account-4-tray-95-color",
+          "name": "Claude Account 4 85 to 95 percent colour transition",
+          "render": "claude_4.headline.percentage > 85",
+          "parent": "claude-account-4-tray-icon",
+          "width": "64",
+          "height": "64",
+          "background": {
+            "type": "colour",
+            "colour": {
+              "color": "#C45020FF",
+              "opacity": "clamp((claude_4.session.percentage - 85) / 10, 0, 1)"
+            }
+          },
+          "corner_radius": "1"
+        },
+        {
+          "id": "claude-account-4-tray-100-color",
+          "name": "Claude Account 4 95 to 100 percent colour transition",
+          "render": "claude_4.headline.percentage > 95",
+          "parent": "claude-account-4-tray-icon",
+          "width": "64",
+          "height": "64",
+          "background": {
+            "type": "colour",
+            "colour": {
+              "color": "#B82020FF",
+              "opacity": "clamp((claude_4.session.percentage - 95) / 5, 0, 1)"
+            }
+          },
+          "corner_radius": "1"
+        },
+        {
+          "id": "claude-account-4-tray-one-digit",
+          "name": "Claude Account 4 one-digit percentage",
+          "render": "(data.poll_ok && claude_4.available && claude_4.headline.display < 9.5) && claude_4.credits.available == 0",
+          "parent": "claude-account-4-tray-icon",
+          "width": "64",
+          "height": "64",
+          "content": {
+            "type": "text",
+            "template": "{claude_4.headline.display:0}",
+            "font_family": "Arial Bold",
+            "font_size": "50",
+            "weight": "bold",
+            "align": "center",
+            "color": {
+              "color": "#FFFFFFFF"
+            }
+          }
+        },
+        {
+          "id": "claude-account-4-tray-two-digits",
+          "name": "Claude Account 4 two-digit percentage",
+          "render": "(data.poll_ok && claude_4.available && claude_4.headline.display >= 9.5 && claude_4.headline.display < 99.5) && claude_4.credits.available == 0",
+          "parent": "claude-account-4-tray-icon",
+          "width": "64",
+          "height": "64",
+          "content": {
+            "type": "text",
+            "template": "{claude_4.headline.display:0}",
+            "font_family": "Arial Bold",
+            "font_size": "42",
+            "weight": "bold",
+            "align": "center",
+            "color": {
+              "color": "#FFFFFFFF"
+            }
+          }
+        },
+        {
+          "id": "claude-account-4-tray-three-digits",
+          "name": "Claude Account 4 three-digit percentage",
+          "render": "(data.poll_ok && claude_4.available && claude_4.headline.display >= 99.5) && claude_4.credits.available == 0",
+          "parent": "claude-account-4-tray-icon",
+          "width": "64",
+          "height": "64",
+          "content": {
+            "type": "text",
+            "template": "{claude_4.headline.display:0}",
+            "font_family": "Arial Bold",
+            "font_size": "30",
+            "weight": "bold",
+            "align": "center",
+            "color": {
+              "color": "#FFFFFFFF"
+            }
+          }
+        },
+        {
+          "id": "claude-account-4-tray-credit-one-digit",
+          "name": "claude_4 credit balance badge",
+          "render": "data.poll_ok && claude_4.available && claude_4.credits.available && claude_4.credits.balance < 9.5",
+          "parent": "claude-account-4-tray-icon",
+          "width": "64",
+          "height": "64",
+          "content": {
+            "type": "text",
+            "template": "{claude_4.credits.balance:0}",
+            "font_family": "Arial Bold",
+            "font_size": "50",
+            "weight": "bold",
+            "align": "center",
+            "color": {
+              "color": "#FFFFFFFF"
+            }
+          }
+        },
+        {
+          "id": "claude-account-4-tray-credit-two-digits",
+          "name": "claude_4 credit balance badge",
+          "render": "data.poll_ok && claude_4.available && claude_4.credits.available && claude_4.credits.balance >= 9.5 && claude_4.credits.balance < 99.5",
+          "parent": "claude-account-4-tray-icon",
+          "width": "64",
+          "height": "64",
+          "content": {
+            "type": "text",
+            "template": "{claude_4.credits.balance:0}",
+            "font_family": "Arial Bold",
+            "font_size": "42",
+            "weight": "bold",
+            "align": "center",
+            "color": {
+              "color": "#FFFFFFFF"
+            }
+          }
+        },
+        {
+          "id": "claude-account-4-tray-credit-three-digits",
+          "name": "claude_4 credit balance badge",
+          "render": "data.poll_ok && claude_4.available && claude_4.credits.available && claude_4.credits.balance >= 99.5 && claude_4.credits.balance < 999.5",
+          "parent": "claude-account-4-tray-icon",
+          "width": "64",
+          "height": "64",
+          "content": {
+            "type": "text",
+            "template": "{claude_4.credits.balance:0}",
+            "font_family": "Arial Bold",
+            "font_size": "30",
+            "weight": "bold",
+            "align": "center",
+            "color": {
+              "color": "#FFFFFFFF"
+            }
+          }
+        },
+        {
+          "id": "claude-account-4-tray-credit-thousands",
+          "name": "claude_4 credit balance badge",
+          "render": "data.poll_ok && claude_4.available && claude_4.credits.available && claude_4.credits.balance >= 999.5",
+          "parent": "claude-account-4-tray-icon",
+          "width": "64",
+          "height": "64",
+          "content": {
+            "type": "text",
+            "template": "{claude_4.credits.balance / 1000:0.0}k",
             "font_family": "Arial Bold",
             "font_size": "30",
             "weight": "bold",

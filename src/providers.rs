@@ -14,6 +14,13 @@ pub enum ProviderId {
     Antigravity = 2,
     OpenCode = 3,
     Cursor = 4,
+    /// Additional named Claude accounts, configured with their own credential
+    /// directory (mirroring the CLI's `CLAUDE_CONFIG_DIR`). Bounded at three
+    /// extra slots because theme layouts are hand-authored per provider, not
+    /// generated from a dynamic list.
+    ClaudeAccount2 = 5,
+    ClaudeAccount3 = 6,
+    ClaudeAccount4 = 7,
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -32,7 +39,7 @@ pub struct ProviderDescriptor {
     pub default_enabled: bool,
 }
 
-pub const PROVIDER_DESCRIPTORS: [ProviderDescriptor; 5] = [
+pub const PROVIDER_DESCRIPTORS: [ProviderDescriptor; 8] = [
     ProviderDescriptor {
         id: ProviderId::Claude,
         key: "claude",
@@ -78,16 +85,58 @@ pub const PROVIDER_DESCRIPTORS: [ProviderDescriptor; 5] = [
         native_menu_command_id: 64,
         default_enabled: false,
     },
+    ProviderDescriptor {
+        id: ProviderId::ClaudeAccount2,
+        key: "claude_2",
+        cache_key: "claude_account_2",
+        display_name: "Claude Account 2",
+        settings_description: "Collect usage from an additional Claude account",
+        native_menu_command_id: 65,
+        default_enabled: false,
+    },
+    ProviderDescriptor {
+        id: ProviderId::ClaudeAccount3,
+        key: "claude_3",
+        cache_key: "claude_account_3",
+        display_name: "Claude Account 3",
+        settings_description: "Collect usage from an additional Claude account",
+        native_menu_command_id: 66,
+        default_enabled: false,
+    },
+    ProviderDescriptor {
+        id: ProviderId::ClaudeAccount4,
+        key: "claude_4",
+        cache_key: "claude_account_4",
+        display_name: "Claude Account 4",
+        settings_description: "Collect usage from an additional Claude account",
+        native_menu_command_id: 67,
+        default_enabled: false,
+    },
 ];
 
 impl ProviderId {
-    pub const ALL: [Self; 5] = [
+    pub const ALL: [Self; 8] = [
         Self::Claude,
         Self::Codex,
         Self::Antigravity,
         Self::OpenCode,
         Self::Cursor,
+        Self::ClaudeAccount2,
+        Self::ClaudeAccount3,
+        Self::ClaudeAccount4,
     ];
+
+    /// The three additional named Claude account slots, in a stable order.
+    pub const EXTRA_CLAUDE_ACCOUNTS: [Self; 3] =
+        [Self::ClaudeAccount2, Self::ClaudeAccount3, Self::ClaudeAccount4];
+
+    /// This provider's position in [`Self::EXTRA_CLAUDE_ACCOUNTS`], if it is
+    /// one of the additional named Claude account slots.
+    pub fn extra_claude_account_index(self) -> Option<usize> {
+        Self::EXTRA_CLAUDE_ACCOUNTS
+            .iter()
+            .position(|&provider| provider == self)
+    }
 
     pub const fn descriptor(self) -> &'static ProviderDescriptor {
         &PROVIDER_DESCRIPTORS[self as usize]

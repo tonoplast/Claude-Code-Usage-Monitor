@@ -54,6 +54,24 @@ pub struct SettingsFile {
     show_opencode: bool,
     #[serde(default)]
     show_cursor: bool,
+    #[serde(default)]
+    show_claude_account_2: bool,
+    #[serde(default)]
+    show_claude_account_3: bool,
+    #[serde(default)]
+    show_claude_account_4: bool,
+    #[serde(default)]
+    pub claude_account_2_name: String,
+    #[serde(default)]
+    pub claude_account_2_config_dir: String,
+    #[serde(default)]
+    pub claude_account_3_name: String,
+    #[serde(default)]
+    pub claude_account_3_config_dir: String,
+    #[serde(default)]
+    pub claude_account_4_name: String,
+    #[serde(default)]
+    pub claude_account_4_config_dir: String,
     #[serde(default = "default_true")]
     pub custom_theme_enabled: bool,
     /// Show what is left of each allowance instead of what has been spent, so
@@ -84,6 +102,15 @@ impl Default for SettingsFile {
             show_antigravity: false,
             show_opencode: false,
             show_cursor: false,
+            show_claude_account_2: false,
+            show_claude_account_3: false,
+            show_claude_account_4: false,
+            claude_account_2_name: String::new(),
+            claude_account_2_config_dir: String::new(),
+            claude_account_3_name: String::new(),
+            claude_account_3_config_dir: String::new(),
+            claude_account_4_name: String::new(),
+            claude_account_4_config_dir: String::new(),
             custom_theme_enabled: true,
             usage_countdown: false,
             active_theme_path: None,
@@ -159,6 +186,9 @@ impl SettingsFile {
             ProviderId::Antigravity => self.show_antigravity,
             ProviderId::OpenCode => self.show_opencode,
             ProviderId::Cursor => self.show_cursor,
+            ProviderId::ClaudeAccount2 => self.show_claude_account_2,
+            ProviderId::ClaudeAccount3 => self.show_claude_account_3,
+            ProviderId::ClaudeAccount4 => self.show_claude_account_4,
         }
     }
 
@@ -169,7 +199,66 @@ impl SettingsFile {
             ProviderId::Antigravity => self.show_antigravity = enabled,
             ProviderId::OpenCode => self.show_opencode = enabled,
             ProviderId::Cursor => self.show_cursor = enabled,
+            ProviderId::ClaudeAccount2 => self.show_claude_account_2 = enabled,
+            ProviderId::ClaudeAccount3 => self.show_claude_account_3 = enabled,
+            ProviderId::ClaudeAccount4 => self.show_claude_account_4 = enabled,
         }
+    }
+
+    /// Display name typed by the user for one of the three additional named
+    /// Claude account slots. Empty for every other provider.
+    pub fn claude_account_name(&self, provider: ProviderId) -> &str {
+        match provider {
+            ProviderId::ClaudeAccount2 => &self.claude_account_2_name,
+            ProviderId::ClaudeAccount3 => &self.claude_account_3_name,
+            ProviderId::ClaudeAccount4 => &self.claude_account_4_name,
+            _ => "",
+        }
+    }
+
+    pub fn set_claude_account_name(&mut self, provider: ProviderId, name: String) {
+        match provider {
+            ProviderId::ClaudeAccount2 => self.claude_account_2_name = name,
+            ProviderId::ClaudeAccount3 => self.claude_account_3_name = name,
+            ProviderId::ClaudeAccount4 => self.claude_account_4_name = name,
+            _ => {}
+        }
+    }
+
+    /// Credential directory (mirroring `CLAUDE_CONFIG_DIR`) for one of the
+    /// three additional named Claude account slots. Empty for every other
+    /// provider, including the default Claude entry (which always uses
+    /// `~/.claude`).
+    pub fn claude_account_config_dir(&self, provider: ProviderId) -> &str {
+        match provider {
+            ProviderId::ClaudeAccount2 => &self.claude_account_2_config_dir,
+            ProviderId::ClaudeAccount3 => &self.claude_account_3_config_dir,
+            ProviderId::ClaudeAccount4 => &self.claude_account_4_config_dir,
+            _ => "",
+        }
+    }
+
+    pub fn set_claude_account_config_dir(&mut self, provider: ProviderId, config_dir: String) {
+        match provider {
+            ProviderId::ClaudeAccount2 => self.claude_account_2_config_dir = config_dir,
+            ProviderId::ClaudeAccount3 => self.claude_account_3_config_dir = config_dir,
+            ProviderId::ClaudeAccount4 => self.claude_account_4_config_dir = config_dir,
+            _ => {}
+        }
+    }
+
+    /// Name and credential-directory pairs for the three additional Claude
+    /// account slots, in [`ProviderId::EXTRA_CLAUDE_ACCOUNTS`] order. Cached
+    /// on [`crate::window`]'s `AppState` so tray/menu label lookups and polls
+    /// don't need to reload settings from disk.
+    pub fn claude_account_configs(&self) -> [(String, String); 3] {
+        std::array::from_fn(|index| {
+            let provider = ProviderId::EXTRA_CLAUDE_ACCOUNTS[index];
+            (
+                self.claude_account_name(provider).to_string(),
+                self.claude_account_config_dir(provider).to_string(),
+            )
+        })
     }
 
     pub fn set_enabled_providers(&mut self, providers: ProviderSet) {

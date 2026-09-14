@@ -1,9 +1,15 @@
+use std::path::Path;
 use std::sync::OnceLock;
 use std::time::{Duration, SystemTime, UNIX_EPOCH};
 
 use crate::diagnose;
 use crate::models::{AppUsageData, UsageData, UsageSection};
 use crate::providers::{ProviderId, ProviderSet};
+
+/// Name and credential-directory pairs for the three additional named Claude
+/// account slots, in [`ProviderId::EXTRA_CLAUDE_ACCOUNTS`] order. Built from
+/// [`crate::app_settings::SettingsFile::claude_account_configs`].
+pub type ClaudeAccountConfigs = [(String, String); 3];
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum PollError {
@@ -27,8 +33,13 @@ pub struct PollFailure {
     pub error: PollError,
 }
 
-pub fn poll(enabled_providers: ProviderSet) -> Result<AppUsageData, PollFailure> {
-    poll_concurrently_with(enabled_providers, poll_provider)
+pub fn poll(
+    enabled_providers: ProviderSet,
+    claude_accounts: &ClaudeAccountConfigs,
+) -> Result<AppUsageData, PollFailure> {
+    poll_concurrently_with(enabled_providers, |provider| {
+        poll_provider(provider, claude_accounts)
+    })
 }
 
 /// Keep the previous reading for any enabled provider that failed this cycle.
@@ -185,17 +196,31 @@ fn provider_poller(provider: ProviderId) -> Option<&'static ProviderPoller> {
     PROVIDER_POLLERS.iter().find(|poller| poller.id == provider)
 }
 
-fn poll_provider(provider: ProviderId) -> Result<UsageData, PollError> {
+fn poll_provider(
+    provider: ProviderId,
+    claude_accounts: &ClaudeAccountConfigs,
+) -> Result<UsageData, PollError> {
+    if let Some(index) = provider.extra_claude_account_index() {
+        let (_, config_dir) = &claude_accounts[index];
+        return claude::poll_claude_account(Path::new(config_dir));
+    }
     provider_poller(provider)
         .ok_or(PollError::RequestFailed)
         .and_then(|poller| (poller.poll)())
 }
 
-pub fn credential_watch_snapshot(mode: CredentialWatchMode) -> CredentialWatchSnapshot {
+pub fn credential_watch_snapshot(
+    mode: CredentialWatchMode,
+    claude_accounts: &ClaudeAccountConfigs,
+) -> CredentialWatchSnapshot {
     let (provider, all_sources) = match mode {
         CredentialWatchMode::ActiveSource(provider) => (provider, false),
         CredentialWatchMode::AllSources(provider) => (provider, true),
     };
+    if let Some(index) = provider.extra_claude_account_index() {
+        let (_, config_dir) = &claude_accounts[index];
+        return vec![claude::credential_watch_signature_for(Path::new(config_dir))];
+    }
     provider_poller(provider)
         .map(|poller| (poller.credential_watch)(all_sources))
         .unwrap_or_default()

@@ -89,6 +89,11 @@ impl LanguageId {
                 strings.cursor_token_expired_title,
                 strings.cursor_token_expired_body,
             ),
+            // Extra named Claude accounts share the primary Claude account's
+            // sign-in flow, so the same auth-error copy applies.
+            ProviderId::ClaudeAccount2 | ProviderId::ClaudeAccount3 | ProviderId::ClaudeAccount4 => {
+                (strings.token_expired_title, strings.token_expired_body)
+            }
         }
     }
 
