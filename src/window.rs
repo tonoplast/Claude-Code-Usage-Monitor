@@ -11,6 +11,7 @@ use windows::Win32::Graphics::Gdi::*;
 use windows::Win32::System::LibraryLoader::{GetModuleFileNameW, GetModuleHandleW};
 use windows::Win32::System::Registry::*;
 use windows::Win32::System::Threading::{CreateMutexW, WaitForSingleObject};
+use windows::Win32::System::Time::{FileTimeToSystemTime, SystemTimeToTzSpecificLocalTime};
 use windows::Win32::UI::Accessibility::HWINEVENTHOOK;
 use windows::Win32::UI::Controls::WM_MOUSELEAVE;
 use windows::Win32::UI::HiDpi::*;
@@ -582,6 +583,26 @@ fn provider_label(
     language.text(provider.descriptor().display_name).to_string()
 }
 
+fn local_hhmm(t: Option<SystemTime>) -> Option<String> {
+    const WINDOWS_TO_UNIX_SECONDS: u64 = 11_644_473_600;
+    const TICKS_PER_SECOND: u64 = 10_000_000;
+    let unix = t?.duration_since(UNIX_EPOCH).ok()?.as_secs();
+    let ticks = unix
+        .checked_add(WINDOWS_TO_UNIX_SECONDS)?
+        .checked_mul(TICKS_PER_SECOND)?;
+    let file_time = FILETIME {
+        dwLowDateTime: ticks as u32,
+        dwHighDateTime: (ticks >> 32) as u32,
+    };
+    let mut utc = SYSTEMTIME::default();
+    let mut local = SYSTEMTIME::default();
+    unsafe {
+        FileTimeToSystemTime(&file_time, &mut utc).ok()?;
+        SystemTimeToTzSpecificLocalTime(None, &utc, &mut local).ok()?;
+    }
+    Some(format!("{:02}:{:02}", local.wHour, local.wMinute))
+}
+
 fn tray_usage_summary_lines(
     data: &AppUsageData,
     providers: ProviderSet,
@@ -605,8 +626,11 @@ fn tray_usage_summary_lines(
                 .weekly_label
                 .as_deref()
                 .unwrap_or(strings.weekly_window);
+            let session_reset = local_hhmm(usage.session.resets_at)
+                .map(|t| format!(" (reset {t})"))
+                .unwrap_or_default();
             Some(format!(
-                "{} {}: {:.0}% | {}: {:.0}%",
+                "{} {}: {:.0}%{session_reset} | {}: {:.0}%",
                 provider_label(provider, claude_accounts, language),
                 strings.session_window,
                 shown(usage.session.percentage),

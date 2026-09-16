@@ -11,6 +11,7 @@ mod models;
 mod native_interop;
 mod poller;
 mod providers;
+mod statusline;
 mod studio_app;
 mod theme;
 mod theme_engine;
@@ -37,6 +38,11 @@ fn main() {
                 let _ = error;
             }
         }
+    }
+
+    if args.iter().any(|a| a == "--statusline") {
+        statusline::run(&args);
+        return;
     }
 
     if studio_app::handle_cli_mode(&args) {
