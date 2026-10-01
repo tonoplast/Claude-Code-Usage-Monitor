@@ -1,7 +1,8 @@
 use std::os::windows::process::CommandExt;
 use std::path::{Path, PathBuf};
 use std::process::Command;
-use std::time::{Duration, SystemTime, UNIX_EPOCH};
+use std::sync::Mutex;
+use std::time::{Duration, Instant, SystemTime, UNIX_EPOCH};
 
 use serde::Deserialize;
 
@@ -116,21 +117,18 @@ pub(super) fn credential_watch_signature_for(config_dir: &Path) -> String {
 }
 
 pub(super) fn fetch_usage_with_fallback(token: &str) -> Result<UsageData, PollError> {
-    // Try the dedicated usage endpoint first
-    if let Some(data) = try_usage_endpoint(token)? {
-        // If reset timers are missing, fill them in from the Messages API
-        if data.session.resets_at.is_none() || data.weekly.resets_at.is_none() {
-            if let Ok(fallback) = fetch_usage_via_messages(token) {
-                let mut merged = data;
-                merged.session.available |= fallback.session.available;
-                merged.weekly.available |= fallback.weekly.available;
-                if merged.session.resets_at.is_none() {
-                    merged.session.resets_at = fallback.session.resets_at;
+    // Try the dedicated usage endpoint first. A missing session reset means
+    // the 5-hour window has not started, so a 1-token ping starts it and
+    // reports the reset time. That keeps the windows cycling while the app
+    // runs, at the cost of one tiny message per window.
+    if let Some(mut data) = try_usage_endpoint(token)? {
+        if data.session.resets_at.is_none() && ping_allowed(token) {
+            if let Ok(ping) = fetch_usage_via_messages(token) {
+                data.session.available |= ping.session.available;
+                data.session.resets_at = ping.session.resets_at;
+                if data.weekly.resets_at.is_none() {
+                    data.weekly.resets_at = ping.weekly.resets_at;
                 }
-                if merged.weekly.resets_at.is_none() {
-                    merged.weekly.resets_at = fallback.weekly.resets_at;
-                }
-                return Ok(merged);
             }
         }
         return Ok(data);
@@ -142,6 +140,21 @@ pub(super) fn fetch_usage_with_fallback(token: &str) -> Result<UsageData, PollEr
         diagnose::log("usage endpoint and Messages API fallback both failed");
     }
     result
+}
+
+const PING_COOLDOWN: Duration = Duration::from_secs(60 * 60);
+
+/// At most one window-starting ping per account per hour, so a failed or
+/// ignored ping cannot turn every poll into a paid request.
+fn ping_allowed(token: &str) -> bool {
+    static LAST_PINGS: Mutex<Vec<(String, Instant)>> = Mutex::new(Vec::new());
+    let mut pings = LAST_PINGS.lock().unwrap_or_else(|e| e.into_inner());
+    pings.retain(|(_, at)| at.elapsed() < PING_COOLDOWN);
+    if pings.iter().any(|(t, _)| t == token) {
+        return false;
+    }
+    pings.push((token.to_owned(), Instant::now()));
+    true
 }
 
 pub(super) fn try_usage_endpoint(token: &str) -> Result<Option<UsageData>, PollError> {
@@ -932,6 +945,13 @@ mod tests {
                 assert_eq!(data.weekly.available, weekly);
             }
         }
+    }
+
+    #[test]
+    fn window_ping_is_limited_to_once_per_hour_per_account() {
+        assert!(ping_allowed("test-token-a"));
+        assert!(!ping_allowed("test-token-a"));
+        assert!(ping_allowed("test-token-b"));
     }
 
     fn status_error(code: u16) -> ureq::Error {
