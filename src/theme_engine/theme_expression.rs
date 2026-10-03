@@ -541,9 +541,15 @@ pub(super) fn format_usage_line(base: &str, context: &DataContext) -> Option<Str
     let seconds = context
         .get(&format!("{provider}.{window}.reset.seconds"))
         .unwrap_or(0.0);
+    // Beyond a day, a lone "5d" could mean anything up to 6d, so add the hours.
+    let duration_format = if seconds >= 86_400.0 {
+        "duration"
+    } else {
+        "duration_short"
+    };
     Some(format!(
         "{percentage}% · {}",
-        format_value(seconds, "duration_short", context)
+        format_value(seconds, duration_format, context)
     ))
 }
 

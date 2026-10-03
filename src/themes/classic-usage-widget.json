@@ -19,7 +19,7 @@
         "offset_x": 0,
         "offset_y": 0
       },
-      "width": "42 + providers.count * (ceil(10 / max(1, providers.count)) * 11 - 1 + 4 + 62) + max(0, providers.count - 1) * 3 + (providers.opencode.enabled + providers.cursor.enabled) * 28",
+      "width": "42 + providers.count * (ceil(10 / max(1, providers.count)) * 11 - 1 + 4 + 86) + max(0, providers.count - 1) * 3 + (providers.opencode.enabled + providers.cursor.enabled) * 28",
       "height": "46",
       "mouse_events": {
         "right_click": "show_context_menu(\"classic-v1\")"
@@ -459,7 +459,7 @@
           "parent": "claude-provider",
           "x": "ceil(10 / max(1, providers.count)) * 11 - 1 + 4",
           "y": "5",
-          "width": "62",
+          "width": "86",
           "height": "13",
           "content": {
             "type": "text",
@@ -506,7 +506,7 @@
           "parent": "claude-provider",
           "x": "ceil(10 / max(1, providers.count)) * 11 - 1 + 4",
           "y": "5",
-          "width": "62",
+          "width": "86",
           "height": "13",
           "content": {
             "type": "text",
@@ -553,7 +553,7 @@
           "parent": "claude-provider",
           "x": "ceil(10 / max(1, providers.count)) * 11 - 1 + 4",
           "y": "28",
-          "width": "62",
+          "width": "86",
           "height": "13",
           "content": {
             "type": "text",
@@ -600,7 +600,7 @@
           "parent": "claude-provider",
           "x": "ceil(10 / max(1, providers.count)) * 11 - 1 + 4",
           "y": "28",
-          "width": "62",
+          "width": "86",
           "height": "13",
           "content": {
             "type": "text",
@@ -655,7 +655,7 @@
           "parent": "codex-provider",
           "x": "ceil(10 / max(1, providers.count)) * 11 - 1 + 4",
           "y": "5",
-          "width": "62",
+          "width": "86",
           "height": "13",
           "content": {
             "type": "text",
@@ -702,7 +702,7 @@
           "parent": "codex-provider",
           "x": "ceil(10 / max(1, providers.count)) * 11 - 1 + 4",
           "y": "5",
-          "width": "62",
+          "width": "86",
           "height": "13",
           "content": {
             "type": "text",
@@ -749,7 +749,7 @@
           "parent": "codex-provider",
           "x": "ceil(10 / max(1, providers.count)) * 11 - 1 + 4",
           "y": "28",
-          "width": "62",
+          "width": "86",
           "height": "13",
           "content": {
             "type": "text",
@@ -796,7 +796,7 @@
           "parent": "codex-provider",
           "x": "ceil(10 / max(1, providers.count)) * 11 - 1 + 4",
           "y": "28",
-          "width": "62",
+          "width": "86",
           "height": "13",
           "content": {
             "type": "text",
@@ -851,7 +851,7 @@
           "parent": "antigravity-provider",
           "x": "ceil(10 / max(1, providers.count)) * 11 - 1 + 4",
           "y": "5",
-          "width": "62",
+          "width": "86",
           "height": "13",
           "content": {
             "type": "text",
@@ -898,7 +898,7 @@
           "parent": "antigravity-provider",
           "x": "ceil(10 / max(1, providers.count)) * 11 - 1 + 4",
           "y": "5",
-          "width": "62",
+          "width": "86",
           "height": "13",
           "content": {
             "type": "text",
@@ -945,7 +945,7 @@
           "parent": "antigravity-provider",
           "x": "ceil(10 / max(1, providers.count)) * 11 - 1 + 4",
           "y": "28",
-          "width": "62",
+          "width": "86",
           "height": "13",
           "content": {
             "type": "text",
@@ -992,7 +992,7 @@
           "parent": "antigravity-provider",
           "x": "ceil(10 / max(1, providers.count)) * 11 - 1 + 4",
           "y": "28",
-          "width": "62",
+          "width": "86",
           "height": "13",
           "content": {
             "type": "text",
@@ -1047,7 +1047,7 @@
           "parent": "opencode-provider",
           "x": "ceil(10 / max(1, providers.count)) * 11 - 1 + 4",
           "y": "5",
-          "width": "62",
+          "width": "86",
           "height": "13",
           "content": {
             "type": "text",
@@ -1094,7 +1094,7 @@
           "parent": "opencode-provider",
           "x": "ceil(10 / max(1, providers.count)) * 11 - 1 + 4",
           "y": "5",
-          "width": "62",
+          "width": "86",
           "height": "13",
           "content": {
             "type": "text",
@@ -1237,7 +1237,7 @@
           "parent": "claude-provider",
           "x": "ceil(10 / max(1, providers.count)) * 11 - 1 + 4",
           "y": "28",
-          "width": "62",
+          "width": "86",
           "height": "13",
           "content": {
             "type": "text",
@@ -1287,7 +1287,7 @@
           "parent": "claude-provider",
           "x": "ceil(10 / max(1, providers.count)) * 11 - 1 + 4",
           "y": "28",
-          "width": "62",
+          "width": "86",
           "height": "13",
           "content": {
             "type": "text",
@@ -1343,7 +1343,7 @@
           "parent": "claude-account-2-provider",
           "x": "ceil(10 / max(1, providers.count)) * 11 - 1 + 4",
           "y": "5",
-          "width": "62",
+          "width": "86",
           "height": "13",
           "content": {
             "type": "text",
@@ -1390,7 +1390,7 @@
           "parent": "claude-account-2-provider",
           "x": "ceil(10 / max(1, providers.count)) * 11 - 1 + 4",
           "y": "5",
-          "width": "62",
+          "width": "86",
           "height": "13",
           "content": {
             "type": "text",
@@ -1437,7 +1437,7 @@
           "parent": "claude-account-2-provider",
           "x": "ceil(10 / max(1, providers.count)) * 11 - 1 + 4",
           "y": "28",
-          "width": "62",
+          "width": "86",
           "height": "13",
           "content": {
             "type": "text",
@@ -1484,7 +1484,7 @@
           "parent": "claude-account-2-provider",
           "x": "ceil(10 / max(1, providers.count)) * 11 - 1 + 4",
           "y": "28",
-          "width": "62",
+          "width": "86",
           "height": "13",
           "content": {
             "type": "text",
@@ -1533,7 +1533,7 @@
           "parent": "claude-account-2-provider",
           "x": "ceil(10 / max(1, providers.count)) * 11 - 1 + 4",
           "y": "28",
-          "width": "62",
+          "width": "86",
           "height": "13",
           "content": {
             "type": "text",
@@ -1583,7 +1583,7 @@
           "parent": "claude-account-2-provider",
           "x": "ceil(10 / max(1, providers.count)) * 11 - 1 + 4",
           "y": "28",
-          "width": "62",
+          "width": "86",
           "height": "13",
           "content": {
             "type": "text",
@@ -1639,7 +1639,7 @@
           "parent": "claude-account-3-provider",
           "x": "ceil(10 / max(1, providers.count)) * 11 - 1 + 4",
           "y": "5",
-          "width": "62",
+          "width": "86",
           "height": "13",
           "content": {
             "type": "text",
@@ -1686,7 +1686,7 @@
           "parent": "claude-account-3-provider",
           "x": "ceil(10 / max(1, providers.count)) * 11 - 1 + 4",
           "y": "5",
-          "width": "62",
+          "width": "86",
           "height": "13",
           "content": {
             "type": "text",
@@ -1733,7 +1733,7 @@
           "parent": "claude-account-3-provider",
           "x": "ceil(10 / max(1, providers.count)) * 11 - 1 + 4",
           "y": "28",
-          "width": "62",
+          "width": "86",
           "height": "13",
           "content": {
             "type": "text",
@@ -1780,7 +1780,7 @@
           "parent": "claude-account-3-provider",
           "x": "ceil(10 / max(1, providers.count)) * 11 - 1 + 4",
           "y": "28",
-          "width": "62",
+          "width": "86",
           "height": "13",
           "content": {
             "type": "text",
@@ -1829,7 +1829,7 @@
           "parent": "claude-account-3-provider",
           "x": "ceil(10 / max(1, providers.count)) * 11 - 1 + 4",
           "y": "28",
-          "width": "62",
+          "width": "86",
           "height": "13",
           "content": {
             "type": "text",
@@ -1879,7 +1879,7 @@
           "parent": "claude-account-3-provider",
           "x": "ceil(10 / max(1, providers.count)) * 11 - 1 + 4",
           "y": "28",
-          "width": "62",
+          "width": "86",
           "height": "13",
           "content": {
             "type": "text",
@@ -1935,7 +1935,7 @@
           "parent": "claude-account-4-provider",
           "x": "ceil(10 / max(1, providers.count)) * 11 - 1 + 4",
           "y": "5",
-          "width": "62",
+          "width": "86",
           "height": "13",
           "content": {
             "type": "text",
@@ -1982,7 +1982,7 @@
           "parent": "claude-account-4-provider",
           "x": "ceil(10 / max(1, providers.count)) * 11 - 1 + 4",
           "y": "5",
-          "width": "62",
+          "width": "86",
           "height": "13",
           "content": {
             "type": "text",
@@ -2029,7 +2029,7 @@
           "parent": "claude-account-4-provider",
           "x": "ceil(10 / max(1, providers.count)) * 11 - 1 + 4",
           "y": "28",
-          "width": "62",
+          "width": "86",
           "height": "13",
           "content": {
             "type": "text",
@@ -2076,7 +2076,7 @@
           "parent": "claude-account-4-provider",
           "x": "ceil(10 / max(1, providers.count)) * 11 - 1 + 4",
           "y": "28",
-          "width": "62",
+          "width": "86",
           "height": "13",
           "content": {
             "type": "text",
@@ -2125,7 +2125,7 @@
           "parent": "claude-account-4-provider",
           "x": "ceil(10 / max(1, providers.count)) * 11 - 1 + 4",
           "y": "28",
-          "width": "62",
+          "width": "86",
           "height": "13",
           "content": {
             "type": "text",
@@ -2175,7 +2175,7 @@
           "parent": "claude-account-4-provider",
           "x": "ceil(10 / max(1, providers.count)) * 11 - 1 + 4",
           "y": "28",
-          "width": "62",
+          "width": "86",
           "height": "13",
           "content": {
             "type": "text",
@@ -2225,7 +2225,7 @@
           "parent": "codex-provider",
           "x": "ceil(10 / max(1, providers.count)) * 11 - 1 + 4",
           "y": "28",
-          "width": "62",
+          "width": "86",
           "height": "13",
           "content": {
             "type": "text",
@@ -2275,7 +2275,7 @@
           "parent": "codex-provider",
           "x": "ceil(10 / max(1, providers.count)) * 11 - 1 + 4",
           "y": "28",
-          "width": "62",
+          "width": "86",
           "height": "13",
           "content": {
             "type": "text",

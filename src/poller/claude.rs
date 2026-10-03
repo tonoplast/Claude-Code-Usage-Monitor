@@ -494,9 +494,12 @@ fn cli_refresh_windows_token_with_dir(config_dir: Option<&Path>) {
         .stdin(std::process::Stdio::null())
         .stdout(std::process::Stdio::null())
         .stderr(std::process::Stdio::null());
-    if let Some(config_dir) = config_dir {
-        command.env("CLAUDE_CONFIG_DIR", config_dir);
-    }
+    // The default account always reads `~/.claude`, so an inherited
+    // CLAUDE_CONFIG_DIR would make the CLI refresh some other account instead.
+    match config_dir {
+        Some(config_dir) => command.env("CLAUDE_CONFIG_DIR", config_dir),
+        None => command.env_remove("CLAUDE_CONFIG_DIR"),
+    };
 
     let mut child = match command.spawn() {
         Ok(child) => child,
